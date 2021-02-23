@@ -14,6 +14,7 @@ package ProjectOneEngine;
 //    import ArmyOfBaab.CrazyBaab;
 
 
+import OurCode.OurAI;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -51,7 +52,7 @@ public class AIGameApp extends Application{
     public void start(Stage primaryStage){
 	//IMPORTANT : Change these lines to change who is playing!
 	TOP_Player = new RandomPlayer();
-	BOT_Player = null;  // null means "Human Player"
+	BOT_Player = new OurAI();  // null means "Human Player"
 
 	//IMPORTANT : If there is a File_Name
 	//     Then we will always display the game from the file!
