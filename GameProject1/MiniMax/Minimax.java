@@ -68,8 +68,8 @@ public class Minimax {
      */
     public Move findMove(GameState curState, int depth){
         GameNode root = buildTree(curState, depth);
-        maxMin(root, depth, true);
-
+        int r = maxMin(root, depth, true);
+        System.out.println(r);
         // root.printUtilities();
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
@@ -83,8 +83,9 @@ public class Minimax {
         GameState s = node.getGameState();
         PlayerID  curP = s.getCurPlayer();
         PlayerID  enemy;
-        if (maxitPlayer) enemy = this.self;
-        else enemy = this.enemy;
+
+        if (maxitPlayer) enemy = this.enemy;
+        else             enemy = this.self;
 
         int curPoints = s.getHome(curP);
         int inRowBad = 0;
@@ -98,7 +99,7 @@ public class Minimax {
         int enemyPoints = s.getHome(enemy);
         int inRowGood = 0;
         for (int i=0; i < 6; i++) {
-            int stones = s.getStones(curP, i);
+            int stones = s.getStones(enemy, i);
             if (stones == 1 || stones == 2) inRowBad ++;
         }
 
@@ -134,7 +135,7 @@ public class Minimax {
                     root.setFavoriteChild(child);
                 }
             }
-
+            return value;
         // Enemy player = Min it
         } else {
             value = this.MAX;
@@ -146,7 +147,8 @@ public class Minimax {
                     root.setFavoriteChild(child);
                 }
             }
+            return value;
         }
-        return value;
+        // return value;
     }
 }

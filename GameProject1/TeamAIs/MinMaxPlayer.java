@@ -3,8 +3,6 @@ package TeamAIs;
 import MiniMax.Minimax;
 import ProjectOneEngine.*;
 
-import java.util.Random;
-
 public class MinMaxPlayer implements Player {
 
     public Move getMove(GameState state){
@@ -19,7 +17,7 @@ public class MinMaxPlayer implements Player {
                 done = true;
             }
         }
-        System.out.println("");  // Just to help make it clear what move was made
+        // System.out.println("");  // Just to help make it clear what move was made
         return move;
     }
 
