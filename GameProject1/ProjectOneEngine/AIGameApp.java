@@ -16,6 +16,9 @@ package ProjectOneEngine;
 
 import TeamAIs.MinMaxPlayer;
 import TeamAIs.MostPointsPlayer;
+import ArmyOfBaab.*;
+
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -47,7 +50,7 @@ public class AIGameApp extends Application{
 
     public void start(Stage primaryStage){
 	//IMPORTANT : Change these lines to change who is playing!
-	TOP_Player = new MostPointsPlayer();
+	TOP_Player = new BabyBaab();
 	BOT_Player = new MinMaxPlayer();  // null means "Human Player"
 
 	//IMPORTANT : If there is a File_Name
