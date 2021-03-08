@@ -2,12 +2,10 @@ package MiniMax;
 
 import HelperClasses.FullTree;
 import HelperClasses.GameNode;
-import ProjectOneEngine.GameRules;
+import HelperClasses.TreePrinter;
 import ProjectOneEngine.GameState;
 import ProjectOneEngine.Move;
 import ProjectOneEngine.PlayerID;
-
-import java.util.ArrayList;
 
 
 public class Minimax {
@@ -34,12 +32,11 @@ public class Minimax {
     Call Function to perform minimax on the tree, returning the move we should make
      */
     public Move findMove(GameState curState, int depth){
-        FullTree myTree = new FullTree();
-        GameNode root = myTree.buildTree(curState, depth);
+        GameNode root = FullTree.buildTree(curState, depth);
         int r = maxMin(root, depth, true);
         System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
-        // root.printUtilities();
-        System.out.println(myTree.lengthOfEachLevel());
+
+        System.out.println(TreePrinter.lengthOfEachLevel(root));
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
     }
