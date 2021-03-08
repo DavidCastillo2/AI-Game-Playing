@@ -1,5 +1,7 @@
 package MiniMax;
 
+import HelperClasses.GameNode;
+
 import java.util.ArrayList;
 
 /**

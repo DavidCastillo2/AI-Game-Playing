@@ -1,5 +1,7 @@
 package MiniMax;
 
+import HelperClasses.FullTree;
+import HelperClasses.GameNode;
 import ProjectOneEngine.GameRules;
 import ProjectOneEngine.GameState;
 import ProjectOneEngine.Move;
@@ -27,51 +29,17 @@ public class Minimax {
             this.enemy = PlayerID.TOP;
         }
     }
-    /*
-    Takes in a current GameState, returns a list of possible GameState's
-    one-turn in the future
-     */
-    public static ArrayList<GameNode> generateStates(GameNode curNode){
-        PlayerID cur_player = curNode.getGameState().getCurPlayer();
-        for (int i = 0; i<6; i++){
-            if (curNode.getGameState().getStones(cur_player, i) > 0){
-                GameState childState = GameRules.makeMove(curNode.getGameState(), i);
-                GameNode childNode = new GameNode(childState, curNode, i);
-                curNode.addChild(childNode);
-            }
-        }
-        return curNode.getChildren();
-    }
-
-    /*
-    Builds a tree, where each Node contains a GameState, parent, and children.
-     */
-    //TODO: Test tree is built properly
-    public static GameNode buildTree(GameState curState, int depth){
-        GameNode root = new GameNode(curState, null, -1);
-        ArrayList<GameNode> prev = new ArrayList<>();
-        prev.add(root);
-        //For each layer
-        for (int i=0; i < depth; i++){
-            ArrayList<GameNode> nextPrev = new ArrayList<>();
-            // For each node in previous layer
-            for (GameNode cur: prev){
-                // Get all children
-                nextPrev.addAll(generateStates(cur));
-            }
-            prev = nextPrev;
-        }
-        return root;
-    }
 
     /**
     Call Function to perform minimax on the tree, returning the move we should make
      */
     public Move findMove(GameState curState, int depth){
-        GameNode root = buildTree(curState, depth);
+        FullTree myTree = new FullTree();
+        GameNode root = myTree.buildTree(curState, depth);
         int r = maxMin(root, depth, true);
         System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
         // root.printUtilities();
+        System.out.println(myTree.lengthOfEachLevel());
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
     }
@@ -114,7 +82,7 @@ public class Minimax {
     }
 
     private static int utilityFormula(int pointsDiff, int inRowBad, int inRowGood) {
-        return pointsDiff - inRowBad*0 + inRowGood*0;
+        return pointsDiff - inRowBad*2 + inRowGood*0;
     }
 
 

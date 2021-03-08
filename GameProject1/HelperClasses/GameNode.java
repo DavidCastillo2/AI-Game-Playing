@@ -1,4 +1,4 @@
-package MiniMax;
+package HelperClasses;
 
 import ProjectOneEngine.GameState;
 
