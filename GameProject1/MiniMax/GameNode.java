@@ -13,10 +13,10 @@ public class GameNode {
     int connectingMove;
     GameNode favoriteChild;
 
-    public GameNode(GameState state, GameNode parent, int i){
+    public GameNode(GameState state, GameNode parent, int connectingMove){
         this.state = state;
         this.parent = parent;
-        this.connectingMove = i;
+        this.connectingMove = connectingMove;
         this.children = new ArrayList<>();
 
     }
@@ -53,19 +53,6 @@ public class GameNode {
         return this.connectingMove;
     }
 
-    /**
-     * This is just a testing method for printing and ensuring utilities are what I think they are
-     */
-    public void printUtilities(){
-        System.out.println("\nResults of moving to " + connectingMove + ": " + this.utility + "\n");
-        ArrayList<Integer> utilities = new ArrayList<>();
-        for (GameNode child: this.children){
-            utilities.add(child.getUtility());
-        }
-        System.out.println(utilities + "\n");
-        for (GameNode child: this.children){
-            child.printUtilities();
-        }
-    }
+
 
 }

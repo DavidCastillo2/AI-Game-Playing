@@ -32,17 +32,15 @@ public class Minimax {
     one-turn in the future
      */
     public static ArrayList<GameNode> generateStates(GameNode curNode){
-        ArrayList<GameNode> children = new ArrayList<>();
         PlayerID cur_player = curNode.getGameState().getCurPlayer();
         for (int i = 0; i<6; i++){
             if (curNode.getGameState().getStones(cur_player, i) > 0){
                 GameState childState = GameRules.makeMove(curNode.getGameState(), i);
                 GameNode childNode = new GameNode(childState, curNode, i);
                 curNode.addChild(childNode);
-                children.add(childNode);
             }
         }
-        return children;
+        return curNode.getChildren();
     }
 
     /*
