@@ -18,6 +18,7 @@ public class Minimax {
     private PlayerID playerReturn;
     private int enemyP;
     private int usP;
+    private FullTree tree = null;
 
     public Minimax(PlayerID self) {
         this.self = self;
@@ -28,15 +29,24 @@ public class Minimax {
         }
     }
 
-    /**
+    /*
     Call Function to perform minimax on the tree, returning the move we should make
      */
     public Move findMove(GameState curState, int depth){
-        GameNode root = FullTree.buildTree(curState, depth);
+        // Creating Tree
+        if (this.tree == null) {
+            this.tree = new FullTree();
+        } else {
+            this.tree.update(curState);
+        }
+
+        GameNode root = this.tree.buildTree(curState, depth);
+
+        // Min Max the tree
         int r = maxMin(root, depth, true);
         System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
 
-        System.out.println(TreePrinter.lengthOfEachLevel(root));
+        // Return best move
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
     }
@@ -79,7 +89,7 @@ public class Minimax {
     }
 
     private static int utilityFormula(int pointsDiff, int inRowBad, int inRowGood) {
-        return pointsDiff - inRowBad*2 + inRowGood*0;
+        return pointsDiff - inRowBad*2 + inRowGood;
     }
 
 

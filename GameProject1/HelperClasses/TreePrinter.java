@@ -47,13 +47,14 @@ public class TreePrinter {
                 // Get all children
                 ArrayList<GameNode> children = cur.getChildren();
                 for (GameNode c : children) {
-                    retVal.append(" | ");
-                    retVal.append(c.utility).append(" ");
+                    retVal.append(c.getUtility()).append(" ");
                 }
                 retVal.append(" | ");
                 nextPrev.addAll(children);
             }
+            retVal.append("\n");
             prev = nextPrev;
+            if (prev.size() == 0) break;
         }
         return retVal.toString();
     }

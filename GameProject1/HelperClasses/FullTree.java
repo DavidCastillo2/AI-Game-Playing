@@ -7,11 +7,27 @@ import ProjectOneEngine.PlayerID;
 import java.util.ArrayList;
 
 public class FullTree {
+    GameNode root;
+    ArrayList<GameNode> lastRow;
+    ArrayList<GameNode> nextMoveRow;
+
+    public FullTree() { }
+
+    /*
+    Takes in the current GameState, and uses that to append to the current tree and reset the Root,
+        Thus increasing efficiency.
+    So you first make a FullTree object, then when the gameState changes you just call this before exploring
+        the tree.
+     */
+    public void update(GameState s) {
+
+    }
+
     /*
     Takes in a current GameState, returns a list of possible GameState's
     one-turn in the future
     */
-    private static ArrayList<GameNode> generateStates(GameNode curNode){
+    private ArrayList<GameNode> generateStates(GameNode curNode){
         PlayerID cur_player = curNode.getGameState().getCurPlayer();
         for (int i = 0; i<6; i++){
             if (curNode.getGameState().getStones(cur_player, i) > 0){
@@ -26,7 +42,7 @@ public class FullTree {
     /*
     Builds a tree, where each Node contains a GameState, parent, and children.
      */
-    public static GameNode buildTree(GameState curState, int depth){
+    public GameNode buildTree(GameState curState, int depth){
         GameNode root = new GameNode(curState, null, -1);
         ArrayList<GameNode> cur = new ArrayList<>();
         cur.add(root);
