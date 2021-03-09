@@ -34,17 +34,20 @@ public class Minimax {
      */
     public Move findMove(GameState curState, int depth){
         // Creating Tree
+        long start = System.nanoTime();
         if (this.tree == null) {
             this.tree = new FullTree();
-        } else {
-            this.tree.update(curState);
         }
 
         GameNode root = this.tree.buildTree(curState, depth);
+        long end = System.nanoTime();
+        double elapsed = (end - start) / 1000000000f;
+        System.out.println(elapsed);
 
         // Min Max the tree
         int r = maxMin(root, depth, true);
         System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
+        System.out.println(TreePrinter.lengthOfEachLevel(root));
 
         // Return best move
         GameNode bestMove = root.getFavoriteChild();
