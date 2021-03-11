@@ -15,8 +15,7 @@ public class Minimax {
     private final PlayerID enemy;
     private final int MIN = Integer.MIN_VALUE;
     private final int MAX = Integer.MAX_VALUE;
-    private int alpha;
-    private int beta;
+
 
     public Minimax(PlayerID self) {
         this.self = self;
@@ -67,40 +66,41 @@ public class Minimax {
      Recursive method - maxitPlayer TRUE means we want to maximize their points, and if false we wanna minimize it.
      Functions a lot like Depth First Search.
      */
-    private int maxMin(GameNode currNode, int d, boolean maximize) {
+    private int maxMin(GameNode cur, int d, boolean maximize) {
         // We reach an end of a branch or reached max depth, calculate Utility
-        if (d == 0 || currNode.getChildren().isEmpty()) {
-            int utility = findUtility(currNode);
-            currNode.setUtility(utility);
-            /**
-             * This changes to return minMaxValues JavaBean
-             */
+        if (d == 0 || cur.getChildren().isEmpty()) {
+            int utility = findUtility(cur);
+            cur.setUtility(utility);
             return utility;
         }
-
-        int value, prev;
+        int value;
         // When curPlayer = self, maximize utility
         if (maximize) {
+            //current utility
             value = this.MIN;
-            prev  = value;
-            for (GameNode child : currNode.getChildren()) {
-                value = Math.max(value, maxMin(child, d - 1, false));
-                if (value > prev) {
-                    prev = value;
-                    currNode.setFavoriteChild(child);
+            for (GameNode child : cur.getChildren()) {
+                child.setAlpha(cur.getAlpha());
+                int childUtility = maxMin(child, d - 1, false);
+                if (childUtility > value) {
+                    value = childUtility;
+                    cur.setFavoriteChild(child);
                 }
+                if (childUtility >= cur.getBeta()) return value;
+                if (childUtility > cur.getAlpha()) cur.setAlpha(childUtility);
             }
         }
         // When curPlayer = enemy, minimize utility
         else {
             value = this.MAX;
-            prev  = value;
-            for (GameNode child : currNode.getChildren()) {
-                value = Math.min(value, maxMin(child, d - 1, true));
-                if (value < prev) {
-                    prev = value;
-                    currNode.setFavoriteChild(child);
+            for (GameNode child : cur.getChildren()) {
+                child.setBeta(cur.getBeta());
+                int childUtility = maxMin(child, d - 1, true);
+                if (childUtility < value) {
+                    value = childUtility;
+                    cur.setFavoriteChild(child);
                 }
+                if (childUtility <= cur.getAlpha()) return value;
+                if (childUtility < cur.getBeta()) cur.setBeta(childUtility);
             }
         }
         return value;
