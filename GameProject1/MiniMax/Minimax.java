@@ -32,7 +32,8 @@ public class Minimax {
     Call Function to perform minimax on the tree, returning the move we should make
      */
     public Move findMove(GameState curState, int depth){
-        GameNode root = FullTree.buildTree(curState, depth);
+        GameNode root = new GameNode(curState, null, -1);
+        //GameNode root = FullTree.buildTree(curState, depth);
         maxMin(root, depth, true);
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), curState.getCurPlayer());
@@ -62,14 +63,22 @@ public class Minimax {
             if (enemyStones == 1 || enemyStones == 2) enemyCapturable++;
             enemyTotal += enemyStones;
         }
+
+
         int result = endGameCheck(s, this.self, this.enemy);
         int retval = utilityFormula(curPoints - enemyPoints, playerCapturable, enemyCapturable, selfTotal, enemyTotal);
         return result + retval;
     }
 
     private static int utilityFormula(int pointsDiff, int playerCapturable, int enemyCapturable, int ourStones, int enemyStones) {
-        return pointsDiff*2 - playerCapturable + enemyCapturable;
+        return pointsDiff*3 - playerCapturable/2 + enemyCapturable/2;
     }
+
+//    private static int bubbleCheck(GameState s){
+//        for (int i=0; i < 6; i++){
+//            int enemyBin = s.getStones(enemy)
+//        }
+//    }
 
     private static int endGameCheck(GameState s, PlayerID player, PlayerID enemy) {
         int playerSum = 0;
@@ -125,6 +134,7 @@ public class Minimax {
      */
     public int maxMin(GameNode cur, int d, boolean maximize) {
         // We reach an end of a branch or reached max depth, calculate Utility
+        FullTree.generateStates(cur);
         if (d == 0 || cur.getChildren().isEmpty()) {
             int utility = findUtility(cur);
             cur.setUtility(utility);
