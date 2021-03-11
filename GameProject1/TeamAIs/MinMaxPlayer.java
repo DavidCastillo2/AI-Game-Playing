@@ -12,7 +12,7 @@ public class MinMaxPlayer implements Player {
 
         Minimax Minimax = new Minimax(state.getCurPlayer());
         while (!done) {
-            move = Minimax.findMove(state, 8);
+            move = Minimax.findMove(state, 9);
             if (GameRules.makeMove(state, move) != null){
                 done = true;
             }
