@@ -20,6 +20,7 @@ public class GameNode {
         this.parent = parent;
         this.connectingMove = connectingMove;
         this.children = new ArrayList<>();
+        if (parent != null) parent.addChild(this);
 
     }
 

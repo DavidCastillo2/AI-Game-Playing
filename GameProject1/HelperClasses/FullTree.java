@@ -16,8 +16,7 @@ public class FullTree {
         for (int i = 0; i<6; i++){
             if (curNode.getGameState().getStones(cur_player, i) > 0){
                 GameState childState = GameRules.makeMove(curNode.getGameState(), i);
-                GameNode childNode = new GameNode(childState, curNode, i);
-                curNode.addChild(childNode);
+                new GameNode(childState, curNode, i);
             }
         }
         return curNode.getChildren();
