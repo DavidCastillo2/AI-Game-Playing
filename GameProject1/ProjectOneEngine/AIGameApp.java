@@ -51,7 +51,8 @@ public class AIGameApp extends Application{
 	//IMPORTANT : Change these lines to change who is playing!
 	TOP_Player = new WiseOldBaab();
 
-	/* Options: AlphaBeta, MiniMax, MostPoints, KickMe, GreedyAlphaBeta */
+	/* Options: AlphaBeta, MiniMax, MostPoints, KickMe, GreedyAlphaBeta
+	* Alpha Beta is our best algorithm */
 	BOT_Player = new ArmyOfRipUrRam("AlphaBeta");
 
 	//IMPORTANT : If there is a File_Name
