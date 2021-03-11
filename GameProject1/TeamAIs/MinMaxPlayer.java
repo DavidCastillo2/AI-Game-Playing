@@ -17,6 +17,12 @@ public class MinMaxPlayer implements Player {
                 done = true;
             }
         }
+        System.out.print("Enemy: ");
+        System.out.println(state.getHome(state.getCurPlayer()));
+        System.out.print("Player: ");
+        System.out.print(state.getHome(PlayerID.TOP));
+        System.out.print("\tDifference: ");
+        System.out.println(state.getHome(state.getCurPlayer()) - state.getHome(PlayerID.TOP));
         return move;
     }
 
