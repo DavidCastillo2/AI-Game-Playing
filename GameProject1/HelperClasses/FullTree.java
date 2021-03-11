@@ -11,7 +11,7 @@ public class FullTree {
     Takes in a current GameState, returns a list of possible GameState's
     one-turn in the future
     */
-    private static ArrayList<GameNode> generateStates(GameNode curNode){
+    public static ArrayList<GameNode> generateStates(GameNode curNode){
         PlayerID cur_player = curNode.getGameState().getCurPlayer();
         for (int i = 0; i<6; i++){
             if (curNode.getGameState().getStones(cur_player, i) > 0){
