@@ -12,6 +12,8 @@ public class GameNode {
     // int represents the move that connects parent to this node
     int connectingMove;
     GameNode favoriteChild;
+    int alpha = Integer.MIN_VALUE;
+    int beta = Integer.MAX_VALUE;
 
     public GameNode(GameState state, GameNode parent, int connectingMove){
         this.state = state;
@@ -53,6 +55,20 @@ public class GameNode {
         return this.connectingMove;
     }
 
+    public int getAlpha(){
+        return this.alpha;
+    }
 
+    public void setAlpha(int alpha){
+        this.alpha = alpha;
+    }
+
+    public int getBeta(){
+        return this.beta;
+    }
+
+    public void setBeta(int beta){
+        this.beta = beta;
+    }
 
 }
