@@ -21,8 +21,8 @@ public class TreePrinter {
 
                 // Get all children
                 next.addAll(child.getChildren());
-                count += next.size();
             }
+            count = next.size();
             cur = next;
             if (next.size() == 0) break;
             i++;
