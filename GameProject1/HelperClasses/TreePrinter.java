@@ -14,18 +14,17 @@ public class TreePrinter {
             ArrayList<GameNode> next = new ArrayList<>();
 
             long count = 0;
+            retVal.append("Layer: ").append(i).append("\t NumberOfNodes: ");
 
             // For each node in the current Layer
             for (GameNode child : cur) {
+
                 // Get all children
                 next.addAll(child.getChildren());
             }
-            // Increment Count
             count = next.size();
-
             cur = next;
             if (next.size() == 0) break;
-            retVal.append("Layer: ").append(i).append("\t NumberOfNodes: ");
             i++;
             retVal.append(count).append("\n");
         }
@@ -48,14 +47,13 @@ public class TreePrinter {
                 // Get all children
                 ArrayList<GameNode> children = cur.getChildren();
                 for (GameNode c : children) {
-                    retVal.append(c.getUtility()).append(" ");
+                    retVal.append(" | ");
+                    retVal.append(c.utility).append(" ");
                 }
                 retVal.append(" | ");
                 nextPrev.addAll(children);
             }
-            retVal.append("\n");
             prev = nextPrev;
-            if (prev.size() == 0) break;
         }
         return retVal.toString();
     }

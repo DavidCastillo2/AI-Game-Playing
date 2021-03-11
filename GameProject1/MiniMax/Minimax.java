@@ -15,10 +15,8 @@ public class Minimax {
     private final PlayerID enemy;
     private final int MIN = Integer.MIN_VALUE;
     private final int MAX = Integer.MAX_VALUE;
-    private PlayerID playerReturn;
-    private int enemyP;
-    private int usP;
-    private FullTree tree = null;
+    private int alpha;
+    private int beta;
 
     public Minimax(PlayerID self) {
         this.self = self;
@@ -29,88 +27,60 @@ public class Minimax {
         }
     }
 
-    /*
+    /**
     Call Function to perform minimax on the tree, returning the move we should make
      */
     public Move findMove(GameState curState, int depth){
-        // Creating Tree
-        long start = System.nanoTime();
-        if (this.tree == null) {
-            this.tree = new FullTree();
-        }
-
-        GameNode root = this.tree.buildTree(curState, depth);
-        long end = System.nanoTime();
-        double elapsed = (end - start) / 1000000000f;
-        System.out.println(elapsed);
-
-        // Min Max the tree
-        int r = maxMin(root, depth, true);
-        System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
-        System.out.println(TreePrinter.lengthOfEachLevel(root));
-
-        // Return best move
+        GameNode root = FullTree.buildTree(curState, depth);
+        maxMin(root, depth, true);
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
     }
 
-    /*
-    Calculates the utility of a gameState, taking into account who the current player is.
+    /**
+     * Find's the utility of the provided node and returns it
+     * @param node : GameNode to find the utility of
+     * @return utility of provided GameNode
      */
-    public int findUtility(GameNode node, boolean maxitPlayer) {
-        // Get Data to feed into utilityFormula()
+    public int findUtility(GameNode node) {
         GameState s = node.getGameState();
-        PlayerID  curP = s.getCurPlayer();
-        PlayerID  enemy;
+        int curPoints = s.getHome(this.self);
+        int enemyPoints = s.getHome(this.enemy);
 
-        if (maxitPlayer) enemy = this.enemy;
-        else             enemy = this.self;
-
-        int curPoints = s.getHome(curP);
         int inRowBad = 0;
-        int sum = 0;
-        for (int i=0; i < 6; i++) {
-            int stones = s.getStones(curP, i);
-            if (stones == 1 || stones == 2) inRowBad ++;
-            sum += stones;
-        }
-
-        int enemyPoints = s.getHome(enemy);
-
         int inRowGood = 0;
         for (int i=0; i < 6; i++) {
-            int stones = s.getStones(enemy, i);
-            if (stones == 1 || stones == 2) inRowBad ++;
+            int playerStones = s.getStones(this.self, i);
+            if (playerStones == 1 || playerStones == 2) inRowBad ++;
+
+            int enemyStones = s.getStones(this.enemy, i);
+            if (enemyStones == 1 || enemyStones == 2) inRowGood++;
         }
-
-        this.playerReturn = curP;
-        this.enemyP = enemyPoints;
-        this.usP = curPoints;
-
-        // System.out.println(maxitPlayer + "\tCur: " + curP + "\tCurP: " + curPoints + "\tEnemy: " + enemy + "\tEpoints: " + enemyPoints);
         return utilityFormula(curPoints - enemyPoints, inRowBad, inRowGood);
     }
 
     private static int utilityFormula(int pointsDiff, int inRowBad, int inRowGood) {
-        return pointsDiff - inRowBad*2 + inRowGood;
+        return pointsDiff - inRowBad*2 + inRowGood*1;
     }
-
 
     /**
      Recursive method - maxitPlayer TRUE means we want to maximize their points, and if false we wanna minimize it.
      Functions a lot like Depth First Search.
      */
-    private int maxMin(GameNode currNode, int d, boolean maxitPlayer) {
+    private int maxMin(GameNode currNode, int d, boolean maximize) {
         // We reach an end of a branch or reached max depth, calculate Utility
         if (d == 0 || currNode.getChildren().isEmpty()) {
-            int utility = findUtility(currNode, maxitPlayer);
+            int utility = findUtility(currNode);
             currNode.setUtility(utility);
+            /**
+             * This changes to return minMaxValues JavaBean
+             */
             return utility;
         }
 
-        // Our player = Max it
         int value, prev;
-        if (maxitPlayer) {
+        // When curPlayer = self, maximize utility
+        if (maximize) {
             value = this.MIN;
             prev  = value;
             for (GameNode child : currNode.getChildren()) {
@@ -120,10 +90,9 @@ public class Minimax {
                     currNode.setFavoriteChild(child);
                 }
             }
-            return value;
-
-        // Enemy player = Min it
-        } else {
+        }
+        // When curPlayer = enemy, minimize utility
+        else {
             value = this.MAX;
             prev  = value;
             for (GameNode child : currNode.getChildren()) {
@@ -133,7 +102,7 @@ public class Minimax {
                     currNode.setFavoriteChild(child);
                 }
             }
-            return value;
         }
+        return value;
     }
 }
