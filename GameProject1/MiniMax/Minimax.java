@@ -33,7 +33,7 @@ public class Minimax {
         GameNode root = FullTree.buildTree(curState, depth);
         maxMin(root, depth, true);
         GameNode bestMove = root.getFavoriteChild();
-        return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
+        return new Move(bestMove.getConnectingMove(), curState.getCurPlayer());
     }
 
     /**
@@ -66,7 +66,7 @@ public class Minimax {
      Recursive method - maxitPlayer TRUE means we want to maximize their points, and if false we wanna minimize it.
      Functions a lot like Depth First Search.
      */
-    private int maxMin(GameNode cur, int d, boolean maximize) {
+    public int maxMin(GameNode cur, int d, boolean maximize) {
         // We reach an end of a branch or reached max depth, calculate Utility
         if (d == 0 || cur.getChildren().isEmpty()) {
             int utility = findUtility(cur);
@@ -80,6 +80,7 @@ public class Minimax {
             value = this.MIN;
             for (GameNode child : cur.getChildren()) {
                 child.setAlpha(cur.getAlpha());
+                child.setBeta(cur.getBeta());
                 int childUtility = maxMin(child, d - 1, false);
                 if (childUtility > value) {
                     value = childUtility;
@@ -94,6 +95,7 @@ public class Minimax {
             value = this.MAX;
             for (GameNode child : cur.getChildren()) {
                 child.setBeta(cur.getBeta());
+                child.setAlpha(cur.getAlpha());
                 int childUtility = maxMin(child, d - 1, true);
                 if (childUtility < value) {
                     value = childUtility;
