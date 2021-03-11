@@ -14,8 +14,7 @@ package ProjectOneEngine;
 //    import ArmyOfBaab.CrazyBaab;
 
 
-import TeamAIs.MinMaxPlayer;
-import TeamAIs.MostPointsPlayer;
+import TeamAIs.ArmyOfRipUrRam;
 import ArmyOfBaab.*;
 
 
@@ -50,8 +49,10 @@ public class AIGameApp extends Application{
 
     public void start(Stage primaryStage){
 	//IMPORTANT : Change these lines to change who is playing!
-	TOP_Player = new CarefulBaab();
-	BOT_Player = new MinMaxPlayer();  // null means "Human Player"
+	TOP_Player = new WiseOldBaab();
+
+	/* Options: AlphaBeta, MiniMax, MostPoints, KickMe, GreedyAlphaBeta */
+	BOT_Player = new ArmyOfRipUrRam("AlphaBeta");
 
 	//IMPORTANT : If there is a File_Name
 	//     Then we will always display the game from the file!
