@@ -3,9 +3,13 @@ package MiniMax;
 import HelperClasses.FullTree;
 import HelperClasses.GameNode;
 import HelperClasses.TreePrinter;
+import ProjectOneEngine.GameRules;
 import ProjectOneEngine.GameState;
 import ProjectOneEngine.Move;
 import ProjectOneEngine.PlayerID;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class Minimax {
@@ -36,7 +40,7 @@ public class Minimax {
         int r = maxMin(root, depth, true);
         System.out.println(this.playerReturn + ": " + r + " EnemyPoints: " + this.enemyP + " CurrPoints: " + this.usP + " this.self: " + this.self + " this.enemy: " + this.enemy);
 
-        System.out.println(TreePrinter.lengthOfEachLevel(root));
+        // System.out.println(TreePrinter.lengthOfEachLevel(root));
         GameNode bestMove = root.getFavoriteChild();
         return new Move(bestMove.getConnectingMove(), root.getGameState().getCurPlayer());
     }
@@ -55,31 +59,87 @@ public class Minimax {
 
         int curPoints = s.getHome(curP);
         int inRowBad = 0;
-        int sum = 0;
+        int ourStones = 0;
         for (int i=0; i < 6; i++) {
             int stones = s.getStones(curP, i);
             if (stones == 1 || stones == 2) inRowBad ++;
-            sum += stones;
+            ourStones += stones;
         }
 
         int enemyPoints = s.getHome(enemy);
 
         int inRowGood = 0;
+        int enemyStones = 0;
         for (int i=0; i < 6; i++) {
             int stones = s.getStones(enemy, i);
             if (stones == 1 || stones == 2) inRowBad ++;
+            enemyStones += stones;
         }
 
         this.playerReturn = curP;
         this.enemyP = enemyPoints;
         this.usP = curPoints;
 
-        // System.out.println(maxitPlayer + "\tCur: " + curP + "\tCurP: " + curPoints + "\tEnemy: " + enemy + "\tEpoints: " + enemyPoints);
-        return utilityFormula(curPoints - enemyPoints, inRowBad, inRowGood);
+        int result = endGameCheck(s, curP, enemy);  // result is 0 if its not an endgame board
+
+        int retVal = utilityFormula(curPoints - enemyPoints, inRowBad, inRowGood, ourStones, enemyStones);
+        return retVal + result;
     }
 
-    private static int utilityFormula(int pointsDiff, int inRowBad, int inRowGood) {
-        return pointsDiff - inRowBad*2 + inRowGood*0;
+    private static int utilityFormula(int pointsDiff, int inRowBad, int inRowGood, int ourStones, int enemyStones) {
+        return pointsDiff*50 - inRowBad*2 + inRowGood + ourStones - enemyStones;
+    }
+
+    private static int endGameCheck(GameState s, PlayerID us, PlayerID enemy) {
+
+        int sumUs = 0;
+        ArrayList<Integer> enemyStones = new ArrayList<>();
+        for (int i=0; i < 6; i++) {
+            int stones = s.getStones(us, i);
+            enemyStones.add(stones);
+            sumUs += stones;
+        }
+
+        int sumThem = 0;
+        ArrayList<Integer> usStones = new ArrayList<>();
+        for (int i=0; i < 6; i++) {
+            int stones = s.getStones(enemy, i);
+            usStones.add(stones);
+            sumThem += stones;
+        }
+
+        // We have no stones, See if the enemy forfeits their stones
+        int stonesWon = sumThem;
+        if (s.getHome(us) + sumThem >= s.getHome(enemy)) stonesWon = Integer.MAX_VALUE-100;  // We win the game or Tie
+        if (sumUs == 0) {
+            for (int i=0; i < 6; i++) {
+                int stones = enemyStones.get(i);
+                if (stones >= 6 - i) {
+                    // They're able to put some stones into another bin and not end the game
+                    stonesWon = 0;
+                    break;
+                }
+            }
+        }
+
+        // They have no stones, See if WE forfeits our stones
+        int stonesLost = sumUs;
+        if (s.getHome(enemy) + sumUs >= s.getHome(us)) stonesLost = Integer.MAX_VALUE-100;  // Enemy win the game or Tie
+        if (sumUs == 0) {
+            for (int i = 0; i < 6; i++) {
+                int stones = usStones.get(i);
+                if (stones >= 6 - i) {
+                    // We're able to put some stones into another bin and not end the game
+                    stonesLost = 0;
+                    break;
+                }
+            }
+        }
+        // Only return a value if its an endgame
+        if ((stonesLost != Integer.MAX_VALUE-100) || (stonesWon != Integer.MAX_VALUE-100)) {
+            return stonesWon - stonesLost;
+        }
+        return 0;
     }
 
 

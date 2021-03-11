@@ -7,6 +7,7 @@ public class MinMaxPlayer implements Player {
 
     public Move getMove(GameState state){
         System.out.println("");  // Just to help make it clear what move was made
+
         boolean done = false;
         Move move = null;
 
