@@ -10,13 +10,13 @@ public class BasicBoi2000 extends BaseBot {
     //This function is called at the start of your opponent's turn
     @Override
     public void startOppTurn(GameState state) {
-
+        System.out.println("\nENEMY -> Doing Stuff and Returning\n");
     }
 
     //This function is called when the player must select a monster to buy
     @Override
     public BuyMonsterMove getBuyMonster(GameState state) {
-        System.out.print("\nUs -  GetBuyMonster  ->  "); // just for clean printing
+        System.out.print("Us -GetBuyMonster()  ->  "); // just for clean printing
         this.update(state);
 
         // Look at the monsters
@@ -37,7 +37,7 @@ public class BasicBoi2000 extends BaseBot {
     //... but hand your opponent the price in coins
     @Override
     public RespondMove getRespond(GameState state, Monster mon, int price) {
-        System.out.print("\nUs -  GetRespond  ->  "); // just for clean printing
+        System.out.print("Us -GetRespond()  ->  "); // just for clean printing
         this.update(state);
 
         // Only buy it if the price is less than the value of the card itself and we can afford it
@@ -50,14 +50,14 @@ public class BasicBoi2000 extends BaseBot {
     // ... the monster chosen by the player
     @Override
     public void stolenMonster(GameState state) {
-        // this.update(state);
+        System.out.print("\nEnemy Stole Our Monster! The Following GameEngine Outputs Are For Enemy! \n");
     }
 
     //This function is called when the player successfully buys a monster
     //... and needs to place the monster at a castle
     @Override
     public PlaceMonsterMove getPlace(GameState state, Monster mon) {
-        System.out.print("\nUs -  GetPlace()  ->  "); // just for clean printing
+        System.out.print("Us -GetPlace()  ->  "); // just for clean printing
         this.update(state);
 
         int lowestNum = Integer.MAX_VALUE;
