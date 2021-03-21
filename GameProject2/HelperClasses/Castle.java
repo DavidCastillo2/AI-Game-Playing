@@ -8,8 +8,8 @@ import ProjectTwoEngine.PlayerID;
 import java.util.List;
 
 public class Castle {
-    List<Monster> badMonsters;
-    List<Monster> goodMonsters;
+    public List<Monster> badMonsters;
+    public List<Monster> goodMonsters;
     public boolean goodDragon = false;
     public boolean badDragon = false;
     public boolean goodSlayer = false;
