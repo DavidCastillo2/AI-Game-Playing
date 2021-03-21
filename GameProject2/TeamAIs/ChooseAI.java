@@ -11,6 +11,7 @@ public class ChooseAI {
     private static Player getBot(String ai) {
         return switch (ai.toLowerCase()) {
             case "basic" -> new BasicBoi2000();
+            case "aggresive" -> new Aggresive();
             default -> null;
         };
     }
