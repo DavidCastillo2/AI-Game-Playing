@@ -14,6 +14,7 @@ public class Castle {
     public boolean badDragon = false;
     public boolean goodSlayer = false;
     public boolean badSlayer = false;
+    public boolean hidden = false;
     public int goodPoints = 0;
     public int badPoints = 0;
     PlayerID enemy;
@@ -26,6 +27,7 @@ public class Castle {
         this.enemy = enemy;
         this.goodMonsters = gs.getMonsters(this.c, us);
         this.badMonsters  = gs.getMonsters(this.c, enemy);
+        if (gs.getHidden(us) == c) this.hidden = true;
         this.update(gs);
     }
 
