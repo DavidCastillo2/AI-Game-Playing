@@ -7,6 +7,11 @@ import java.util.List;
 
 
 public class BasicBoi2000 extends BaseBot {
+
+    public BasicBoi2000(String topOrBot) {
+        super(topOrBot);
+    }
+
     //This function is called at the start of your opponent's turn
     @Override
     public void startOppTurn(GameState state) {
@@ -23,7 +28,10 @@ public class BasicBoi2000 extends BaseBot {
         int biggestMonster = -1;
         Monster chosenOne = null;
         for (Monster m : this.currMonsters) {
-            if (m.value > biggestMonster) chosenOne = m;
+            if (m.value > biggestMonster) {
+                chosenOne = m;
+                biggestMonster = m.value;
+            }
         }
 
         // Create our Move - Chose biggest monster and set the price to half of our coins

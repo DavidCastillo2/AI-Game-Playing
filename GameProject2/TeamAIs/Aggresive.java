@@ -8,6 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Aggresive extends BaseBot {
+    public Aggresive(String topOrBot) {
+        super(topOrBot);
+    }
+
     private class MonsterValue implements Comparator<Monster>{
         public int compare(Monster a, Monster b){
             return a.value - b.value;

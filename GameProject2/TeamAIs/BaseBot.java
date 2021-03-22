@@ -3,7 +3,6 @@ package TeamAIs;
 import HelperClasses.CastleManager;
 import ProjectTwoEngine.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseBot implements Player {
@@ -16,13 +15,21 @@ public abstract class BaseBot implements Player {
     PlayerID self;
     int coins;
 
+    // Required to know if we're TOP or BOT
+    public BaseBot(String topOrBot) {
+        if (topOrBot.equalsIgnoreCase("bot")) {
+            this.self  = PlayerID.BOT;
+            this.enemy = PlayerID.TOP;
+        } else {
+            this.self  = PlayerID.TOP;
+            this.enemy = PlayerID.BOT;
+        }
+    }
+
+
     // This is a setup method called only at the start
     @Override
     public void begin(GameState init_state) {
-        // Defining us Versus Them
-        this.self = init_state.getCurPlayer();  // TODO this is bugged since BOT always goes first
-        if (this.self ==  PlayerID.BOT) this.enemy = PlayerID.TOP;
-        else this.enemy = PlayerID.BOT;
 
         // Setting up one off updates
         this.cm = new CastleManager(init_state, this.self, this.enemy);
