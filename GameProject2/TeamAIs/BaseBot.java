@@ -20,7 +20,7 @@ public abstract class BaseBot implements Player {
     @Override
     public void begin(GameState init_state) {
         // Defining us Versus Them
-        this.self = init_state.getCurPlayer();
+        this.self = init_state.getCurPlayer();  // TODO this is bugged since BOT always goes first
         if (this.self ==  PlayerID.BOT) this.enemy = PlayerID.TOP;
         else this.enemy = PlayerID.BOT;
 
