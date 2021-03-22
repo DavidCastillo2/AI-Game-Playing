@@ -14,8 +14,7 @@ package ProjectOneEngine;
 //    import ArmyOfBaab.CrazyBaab;
 
 
-import TeamAIs.MinMaxPlayer;
-import TeamAIs.MostPointsPlayer;
+import TeamAIs.ArmyOfRipUrRam;
 import ArmyOfBaab.*;
 
 
@@ -46,12 +45,15 @@ public class AIGameApp extends Application{
     GameState state;
     
     // You can raise this delay to slow down the AI moves
-    final double DELAY_TIME = 1;
+    final double DELAY_TIME = .5;
 
     public void start(Stage primaryStage){
 	//IMPORTANT : Change these lines to change who is playing!
-	TOP_Player = new Baab();
-	BOT_Player = new MinMaxPlayer();  // null means "Human Player"
+	TOP_Player = new WiseOldBaab();
+
+	/* Options: AlphaBeta, MiniMax, MostPoints, KickMe, GreedyAlphaBeta
+	* Alpha Beta is our best algorithm */
+	BOT_Player = new ArmyOfRipUrRam("AlphaBeta");
 
 	//IMPORTANT : If there is a File_Name
 	//     Then we will always display the game from the file!
