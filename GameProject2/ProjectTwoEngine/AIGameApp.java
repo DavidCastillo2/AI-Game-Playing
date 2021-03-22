@@ -49,7 +49,8 @@ public class AIGameApp extends Application {
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         TOP_Player = new RandomPlayer();
-        BOT_Player = ChooseAI.buildAI("basic");
+        BOT_Player = new RandomPlayer();
+        //BOT_Player = ChooseAI.buildAI("basic");
 
         //IMPORTANT : If there is a File_Name
         //     Then we will always display the game from the file!

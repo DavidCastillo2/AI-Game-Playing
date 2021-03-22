@@ -100,7 +100,7 @@ public class GameRules{
 	Move last_move = state.getLastMove();
 	boolean answer = false;
 	
-	if( last_move instanceof PlaceMonsterMove ){
+	if( last_move == null || last_move instanceof PlaceMonsterMove ){
 	    List<Move> legal = getLegalMoves(state);
 	    for( Move leg_mov : legal ){
 		if (leg_mov instanceof BuyMonsterMove){
