@@ -45,7 +45,10 @@ public class Aggresive extends BaseBot {
             if (usValue > 0) usid = c;
             //here you find which is closest (basically abs(goodPoints1-badPoint1) < abs(goodPoints2-badPoints2))
             int difference = Math.abs(usValue-enemyValue);
-            if (difference < closestValue) {closest = c; closestValue = difference;}
+            if (difference < closestValue && !cm.get(c).isTaken) {
+                closest = c;
+                closestValue = difference;
+            }
         }
         return new Ids(enemyid, usid, closest);
     }
@@ -117,6 +120,7 @@ public class Aggresive extends BaseBot {
 
     private int winningCastle(CastleID id){
         Castle castle = cm.get(id);
+        if (castle.isTaken) return -1;
         int value = castle.goodPoints - castle.badPoints;
         if (castle.hidden) value += 6;
         if (castle.badSlayer && (castle.goodDragon || castle.hidden)) value -= 6;
@@ -126,6 +130,7 @@ public class Aggresive extends BaseBot {
 
     private int winningCastleEnemy(CastleID id){
         Castle castle = cm.get(id);
+        if (castle.isTaken) return -1;
         int value = castle.badPoints - castle.goodPoints;
         if (castle.badSlayer && castle.goodDragon) value += 6;
         if (castle.goodSlayer && castle.badDragon) value -= 6;
@@ -136,7 +141,7 @@ public class Aggresive extends BaseBot {
     public RespondMove getRespond(GameState state, Monster mon, int price) {
         System.out.print("Us -GetRespond()  ->  "); // just for clean printing
         this.update(state);
-        if (price > this.coins) return new RespondMove(this.self, false, mon); //automatically pass if we can't afford it
+        if (price > this.coins) return new RespondMove(this.self, true, mon); //automatically pass if we can't afford it
         boolean stealing;
         Ids ids = getWinningAndClosest();
         CastleID enemyid = ids.enemy;
@@ -168,6 +173,6 @@ public class Aggresive extends BaseBot {
 
     @Override
     public String getPlayName() {
-        return "CardCounter";
+        return "Aggresive";
     }
 }
