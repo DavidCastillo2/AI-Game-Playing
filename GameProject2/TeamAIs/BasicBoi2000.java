@@ -73,7 +73,7 @@ public class BasicBoi2000 extends BaseBot {
 
         // Chose the castle with the lowest number of points
         for (Castle c : this.cm.getCastles()) {
-            if (c.goodPoints < lowestNum) {
+            if (c.goodPoints < lowestNum && !c.isTaken) {
                 lowestNum = c.goodPoints;
                 chosenOne = c.getID();
             }

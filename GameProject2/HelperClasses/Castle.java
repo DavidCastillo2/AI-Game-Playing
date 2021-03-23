@@ -14,6 +14,7 @@ public class Castle {
     public boolean badDragon = false;
     public boolean goodSlayer = false;
     public boolean badSlayer = false;
+    public boolean isTaken = false;
     public boolean hidden = false;
     public int goodPoints = 0;
     public int badPoints = 0;
@@ -32,6 +33,14 @@ public class Castle {
     }
 
     public void update(GameState gs) {
+
+        // Check to see if the Castle has been Taken
+        if (this.goodMonsters != null && this.badMonsters != null) {
+            if (this.goodMonsters.size() >=4 || this.badMonsters.size() >= 4) {
+                this.isTaken = true;
+                return;
+            }
+        }
 
         // Our side of the game
         if (this.goodMonsters != null) {

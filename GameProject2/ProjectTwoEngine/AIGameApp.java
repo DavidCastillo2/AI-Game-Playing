@@ -44,14 +44,14 @@ public class AIGameApp extends Application {
     GameState state;
 
     // You can raise this delay to slow down the AI moves
-    final double DELAY_TIME = 0.2;
+    final double DELAY_TIME = 0.01;
 
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
-        TOP_Player = ChooseAI.buildAI("basic", "TOP");
-        //TOP_Player = new RandomPlayer();
-        //BOT_Player = new RandomPlayer();
+        //TOP_Player = ChooseAI.buildAI("basic", "TOP");
         BOT_Player = ChooseAI.buildAI("basic", "BOT");
+        TOP_Player = new RandomPlayer();
+        //BOT_Player = new RandomPlayer();
 
         //IMPORTANT : If there is a File_Name
         //     Then we will always display the game from the file!
