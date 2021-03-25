@@ -24,6 +24,10 @@ public class Aggresive extends BaseBot {
             this.us = us;
             this.closest = closest;
         }
+
+        public String toString() {
+            return "Enemy: " + this.enemy + "\t\tUs: " + this.us + "\t\tClosest: " + this.closest;
+        }
     }
     CastleID castleID = null;
     /*
@@ -41,8 +45,8 @@ public class Aggresive extends BaseBot {
         for (CastleID c: CastleID.values()){
             int enemyValue = winningCastleEnemy(c);
             int usValue = winningCastle(c);
-            if (enemyValue > 0) enemyid = c;
-            if (usValue > 0) usid = c;
+            if (enemyValue > 0 && !cm.get(c).isTaken) enemyid = c;
+            if (usValue > 0 && !cm.get(c).isTaken) usid = c;
             //here you find which is closest (basically abs(goodPoints1-badPoint1) < abs(goodPoints2-badPoints2))
             int difference = Math.abs(usValue-enemyValue);
             if (difference < closestValue && !cm.get(c).isTaken) {
@@ -67,6 +71,7 @@ public class Aggresive extends BaseBot {
         Ids ids = getWinningAndClosest();
         CastleID id = ids.us;
         CastleID closest = ids.closest;
+
         if (id != null){
             Castle castle = cm.get(id);
             this.castleID = id;
@@ -90,6 +95,7 @@ public class Aggresive extends BaseBot {
             m = BiggestMonster();
             price = Math.min(this.coins, m.value);
         }
+
         return new BuyMonsterMove(this.self, price, m);
     }
 
@@ -120,7 +126,7 @@ public class Aggresive extends BaseBot {
 
     private int winningCastle(CastleID id){
         Castle castle = cm.get(id);
-        if (castle.isTaken) return -1;
+        if (castle.isTaken) return -100;
         int value = castle.goodPoints - castle.badPoints;
         if (castle.hidden) value += 6;
         if (castle.badSlayer && (castle.goodDragon || castle.hidden)) value -= 6;
@@ -130,7 +136,7 @@ public class Aggresive extends BaseBot {
 
     private int winningCastleEnemy(CastleID id){
         Castle castle = cm.get(id);
-        if (castle.isTaken) return -1;
+        if (castle.isTaken) return -100;
         int value = castle.badPoints - castle.goodPoints;
         if (castle.badSlayer && castle.goodDragon) value += 6;
         if (castle.goodSlayer && castle.badDragon) value -= 6;
@@ -141,17 +147,19 @@ public class Aggresive extends BaseBot {
     public RespondMove getRespond(GameState state, Monster mon, int price) {
         System.out.print("Us -GetRespond()  ->  "); // just for clean printing
         this.update(state);
+
         if (price > this.coins) return new RespondMove(this.self, true, mon); //automatically pass if we can't afford it
         boolean stealing;
         Ids ids = getWinningAndClosest();
         CastleID enemyid = ids.enemy;
         CastleID usid = ids.us;
         CastleID closest = ids.closest;
+
         if (usid != null){
             this.castleID = usid;
-            stealing = true;
+            stealing = false;
         } else {
-            stealing = (enemyid != null);
+            stealing = (enemyid == null);
             this.castleID = closest;
         }
         return new RespondMove(this.self, stealing, mon);
