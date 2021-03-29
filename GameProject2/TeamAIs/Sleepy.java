@@ -51,6 +51,9 @@ public class Sleepy extends BaseBot {
         Monster chosenOne = getBestMonster(monsters, state);
 
         int myCoins =this.coins/2;
+        if(this.enemyCoins+1< this.coins){
+            myCoins=this.enemyCoins+1;
+        }
 
         return new BuyMonsterMove(this.self, myCoins, chosenOne);
     }
@@ -290,11 +293,20 @@ public class Sleepy extends BaseBot {
 
         int self=bestChoice(state, mon, true);
         if((self>prio2 && self<prio1) || self>prio0){
+            System.out.println("I have stole papas");
             return false;
         }
 
         int opp=bestChoice(state, mon, false);
+
+        Boolean one=(opp>prio2 && opp<prio1);
+        Boolean two= opp>prio0 ;
+        Boolean three=(opp>prio5 && opp<prio4);
+
+        System.out.println("opp " + one + " " + two + " " + three);
+
         if((opp>prio2 && opp<prio1) || opp>prio0 || (opp>prio5 && opp<prio4)){
+            System.out.println("it happened");
             bestChoice(state, mon, true);
             return false;
         }
