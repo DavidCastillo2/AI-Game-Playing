@@ -29,6 +29,7 @@ public class ArmyOfRipUrRam implements Player {
                 done = true;
             }
         }
+
         nicePrint(state);
         return move;
     }
