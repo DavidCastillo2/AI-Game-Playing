@@ -49,7 +49,7 @@ public class AIGameApp extends Application {
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         TOP_Player = ChooseAI.buildAI("aggresive", "TOP");  // OPTIONS: basic, aggresive
-        BOT_Player = ChooseAI.buildAI("basic", "BOT");
+        BOT_Player = ChooseAI.buildAI("sleepy", "BOT");
         //TOP_Player = new RandomPlayer();
         //BOT_Player = new RandomPlayer();
 

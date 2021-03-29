@@ -73,5 +73,29 @@ public class Castle {
         return this.c;
     }
 
+
+
+    public void updatePoints(){
+
+        int total = 0;
+        for (Monster m : this.goodMonsters) {
+            if (m.name.equals("Slayer")) this.goodSlayer = true;
+            if (m.name.equals("Dragon")) this.goodDragon = true;
+            total += m.value;
+        }
+        this.goodPoints = total;
+
+
+        total = 0;
+        for (Monster m : this.badMonsters) {
+            if (m.name.equals("Slayer")) this.badSlayer = true;
+            if (m.name.equals("Dragon")) this.badDragon = true;
+            total += m.value;
+        }
+        this.badPoints = total;
+
+
+    }
+
 }
 
