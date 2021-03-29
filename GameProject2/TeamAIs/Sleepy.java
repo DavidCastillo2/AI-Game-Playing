@@ -51,9 +51,6 @@ public class Sleepy extends BaseBot {
         Monster chosenOne = getBestMonster(monsters, state);
 
         int myCoins =this.coins/2;
-        if(myCoins>this.enemyCoins+1){
-            myCoins=this.enemyCoins+1;
-        }
 
         return new BuyMonsterMove(this.self, myCoins, chosenOne);
     }
@@ -297,7 +294,7 @@ public class Sleepy extends BaseBot {
         }
 
         int opp=bestChoice(state, mon, false);
-        if((self>prio2 && self<prio1) || self>prio0 || (opp>prio5 && opp<prio4)){
+        if((opp>prio2 && opp<prio1) || opp>prio0 || (opp>prio5 && opp<prio4)){
             bestChoice(state, mon, true);
             return false;
         }
