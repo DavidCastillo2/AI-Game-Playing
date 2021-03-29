@@ -50,8 +50,8 @@ public class Sleepy extends BaseBot {
         List<Monster> monsters= this.currMonsters;
         Monster chosenOne = getBestMonster(monsters, state);
 
-        int myCoins =this.coins;
-        if(this.coins>this.enemyCoins+1){
+        int myCoins =this.coins/2;
+        if(myCoins>this.enemyCoins+1){
             myCoins=this.enemyCoins+1;
         }
 
