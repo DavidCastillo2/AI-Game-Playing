@@ -128,9 +128,6 @@ public class Aggresive extends BaseBot {
         Castle castle = cm.get(id);
         if (castle.isTaken) return -100;
         int value = castle.goodPoints - castle.badPoints;
-        if (castle.hidden) value += 6;
-        if (castle.badSlayer && (castle.goodDragon || castle.hidden)) value -= 6;
-        if (castle.goodSlayer && castle.badDragon) value += 6;
         return value;
     }
 
@@ -138,8 +135,6 @@ public class Aggresive extends BaseBot {
         Castle castle = cm.get(id);
         if (castle.isTaken) return -100;
         int value = castle.badPoints - castle.goodPoints;
-        if (castle.badSlayer && castle.goodDragon) value += 6;
-        if (castle.goodSlayer && castle.badDragon) value -= 6;
         return value;
     }
 

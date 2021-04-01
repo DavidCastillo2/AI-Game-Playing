@@ -10,10 +10,10 @@ import java.util.List;
 public class Castle {
     public List<Monster> badMonsters;
     public List<Monster> goodMonsters;
-    public boolean goodDragon = false;
-    public boolean badDragon = false;
-    public boolean goodSlayer = false;
-    public boolean badSlayer = false;
+    public int goodDragon= 0;
+    public int badDragon= 0;
+    public int goodSlayer= 0;
+    public int badSlayer= 0;
     public boolean isTaken = false;
     public boolean hidden = false;
     public int goodPoints = 0;
@@ -39,14 +39,19 @@ public class Castle {
         // Our side of the game
         int tempLength = this.goodMonsters.size();
         this.goodMonsters = gs.getMonsters(this.c, this.us);
+        goodDragon= 0;
+        badDragon= 0;
+        goodSlayer= 0;
+        badSlayer= 0;
 
         if (tempLength != this.goodMonsters.size()) {  // New Monsters update our stuff
             int total = 0;
             for (Monster m : this.goodMonsters) {
-                if (m.name.equals("Slayer")) this.goodSlayer = true;
-                if (m.name.equals("Dragon")) this.goodDragon = true;
+                if (m.name.equals("Slayer")) this.goodSlayer+= 1;
+                if (m.name.equals("Dragon")) this.goodDragon+= 1;
                 total += m.value;
             }
+            //            System.out.println("Good total:" + total);
             this.goodPoints = total;
         }
 
@@ -57,12 +62,38 @@ public class Castle {
         if (tempLength != this.badMonsters.size()) {  // New Monsters update our stuff
             int total = 0;
             for (Monster m : this.badMonsters) {
-                if (m.name.equals("Slayer")) this.badSlayer = true;
-                if (m.name.equals("Dragon")) this.badDragon = true;
+                if (m.name.equals("Slayer")) this.badSlayer+= 1;
+                if (m.name.equals("Dragon")) this.badDragon+= 1;
                 total += m.value;
             }
+//            System.out.println("Bad total:" + total);
             this.badPoints = total;
         }
+
+        if(this.hidden){
+            System.out.println("Has hidden");
+            this.goodPoints+=6;
+            this.goodDragon+=1;
+        }
+
+        int goodS=this.goodSlayer;
+        int badD=this.badDragon;
+        while(goodS>0 && badD>0){
+            System.out.println("Eyy");
+            this.badPoints-=6;
+            goodS-=1;
+            badD-=1;
+        };
+
+        int badS=this.badSlayer;
+        int goodD=this.goodDragon;
+        while(badS>0 && goodD>0){
+            System.out.println("Lamal");
+            this.goodPoints-=6;
+            badS-=1;
+            goodD-=1;
+        }
+
 
         // Check to see if the Castle has been Taken
         if (this.goodMonsters.size() >=4 || this.badMonsters.size() >= 4) {
@@ -78,25 +109,9 @@ public class Castle {
 
     public void updatePoints(){
 
-        int total = 0;
-        for (Monster m : this.goodMonsters) {
-            if (m.name.equals("Slayer")) this.goodSlayer = true;
-            if (m.name.equals("Dragon")) this.goodDragon = true;
-            total += m.value;
-        }
-        this.goodPoints = total;
-
-
-        total = 0;
-        for (Monster m : this.badMonsters) {
-            if (m.name.equals("Slayer")) this.badSlayer = true;
-            if (m.name.equals("Dragon")) this.badDragon = true;
-            total += m.value;
-        }
-        this.badPoints = total;
-
-
     }
+
+
 
 }
 

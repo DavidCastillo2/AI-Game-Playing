@@ -77,15 +77,10 @@ public class Sleepy extends BaseBot {
         c.updatePoints();
         if(state.getCastleWon(c.getID())==null){
 
-            //System.out.println("Goodpoints:" + c.goodPoints +"|| Badpoints:" + c.badPoints);
 
             int points = c.goodPoints-c.badPoints;
-            if(c.goodSlayer==true && c.badDragon==true){points+=6;};
-            if(c.badSlayer==true && c.goodDragon==true){points-=6;}
-            if(c.hidden==true){points+=6;}
             castHeur=points;
     }
-//        System.out.println(castHeur + ": " + c.getID());
         return castHeur;
     }
 
@@ -95,9 +90,6 @@ public class Sleepy extends BaseBot {
         c.updatePoints();
         if(state.getCastleWon(c.getID())==null){
             int points = c.badPoints-c.goodPoints;
-            if(c.goodSlayer==true && c.badDragon==true){points-=6;};
-            if(c.badSlayer==true && c.goodDragon==true){points+=6;}
-            if(c.hidden==true){points-=6;}
             castHeur=points;
         }
         return castHeur;
