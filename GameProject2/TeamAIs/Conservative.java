@@ -1,3 +1,8 @@
+// This bot tries and buys the monster with the least point value as possible to win the game narrowly.
+// It somewhat works, its not better than the basicboi2000, but its ok as a bot
+// I think the way it spends coins could be better and maybe a bit finer
+// algorithm for making moves. But I think coin spending was the huge one.
+// Can beat Alice 50/50 (left my score, right opponents score), Basicboi 33/67, Aggressive 60/40
 package TeamAIs;
 
 
@@ -11,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Sleepy extends BaseBot {
+public class Conservative extends BaseBot {
 
     private CastleID choosenCastle;
     private int priorityMult=1000;
@@ -23,7 +28,7 @@ public class Sleepy extends BaseBot {
     private int prio5=40*priorityMult;
     private int prio6=30*priorityMult;
 
-    public Sleepy(String topOrBot) {
+    public Conservative(String topOrBot) {
         super(topOrBot);
 
     }
@@ -43,17 +48,21 @@ public class Sleepy extends BaseBot {
     //This function is called when the player must select a monster to buy
     @Override
     public BuyMonsterMove getBuyMonster(GameState state) {
-        System.out.print("Sleepy -GetBuyMonster()  ->  "); // just for clean printing
+        System.out.print("Conservative -GetBuyMonster()  ->  "); // just for clean printing
         this.update(state);
 
 
         List<Monster> monsters= this.currMonsters;
         Monster chosenOne = getBestMonster(monsters, state);
 
-        int myCoins =this.coins/2;
-        if(this.enemyCoins+1< this.coins){
-            myCoins=this.enemyCoins+1;
+        int myCoins =3;
+        if(chosenOne.value<coins){myCoins=chosenOne.value;}
+
+        if(bestChoice(state,chosenOne,true)>prio3) {
+            if (this.enemyCoins + 1 <= this.coins) {myCoins = this.enemyCoins + 1;}
+            else {myCoins = this.coins;}
         }
+
 
         return new BuyMonsterMove(this.self, myCoins, chosenOne);
     }
@@ -237,7 +246,7 @@ public class Sleepy extends BaseBot {
 
         }
 
-        //If there is a place where the bot is losing, and with our move, can prevent it from losing the area, and gives it an advantage
+        //If there is a place where the bot is losing, and with our move, can prevent it from losing the area, and gives it an advantage, and it will possible win
         else if (newHeur > 0 && heur < 0 && monsters.size()>3) {
             System.out.println("Got to prio 2");
             if ((newHeur < value && value<prio1) || value<prio2) {
@@ -291,28 +300,47 @@ public class Sleepy extends BaseBot {
     
     public boolean stealMonster(GameState state, Monster mon){
 
-        int self=bestChoice(state, mon, true);
-        if((self>prio2 && self<prio1) || self>prio0){
-            System.out.println("I have stole papas");
+        int self=bestChoice(state, mon, false);
+        if(self>prio3){
             return false;
         }
 
         int opp=bestChoice(state, mon, false);
+        System.out.println("opp Score:" + opp);
 
         Boolean one=(opp>prio2 && opp<prio1);
         Boolean two= opp>prio0 ;
-        Boolean three=(opp>prio5 && opp<prio4);
+        //Priority 4 (the heuristic is equal to 0) is greater than priority 5 (the opponent can get to a state of 7+)
+        Boolean three=false;
+
+        for (Castle c : this.cm.getCastles()) {
+            if(whichCastHeur(state, c, true)!=null) {
+                Castle cast= c;
+                int heur=getMyCastHeur(state, cast);
+                cast.goodMonsters.add(mon);
+                int newHeur=getMyCastHeur(state, cast);
+             if( (newHeur > 6 && heur >= 0 && heur<=6) ||  cast.goodMonsters.size()>3) {
+                 bestChoice(state, mon, false);
+                 return false;
+             }
+
+            }
+        }
 
         System.out.println("opp " + one + " " + two + " " + three);
 
-        if((opp>prio2 && opp<prio1) || opp>prio0 || (opp>prio5 && opp<prio4)){
-            System.out.println("it happened");
-            bestChoice(state, mon, true);
-            return false;
-        }
 
-        return true;
-    }
+
+                if(opp>prio2){
+                    System.out.println("it happened");
+                    bestChoice(state, mon, false);
+                    return false;
+                }
+
+
+                return true;
+
+        }
 
 
     //This function is called when your opponent tried to buy a monster
@@ -320,7 +348,7 @@ public class Sleepy extends BaseBot {
     //... but hand your opponent the price in coins
     @Override
     public RespondMove getRespond(GameState state, Monster mon, int price) {
-        System.out.print("Sleepy -GetRespond()  ->  "); // just for clean printing
+        System.out.print("Conservative -GetRespond()  ->  "); // just for clean printing
         this.update(state);
         List<Move> leg_moves = GameRules.getLegalMoves(state);
         RespondMove myMove= new RespondMove(this.self, stealMonster(state, mon), mon);
@@ -344,7 +372,7 @@ public class Sleepy extends BaseBot {
     //... and needs to place the monster at a castle
     @Override
     public PlaceMonsterMove getPlace(GameState state, Monster mon) {
-        System.out.print("Sleepy -GetPlace()  ->  "); // just for clean printing
+        System.out.print("Conservative -GetPlace()  ->  "); // just for clean printing
         this.update(state);
 
         return new PlaceMonsterMove(this.self, getChoosenCastle(), mon);
