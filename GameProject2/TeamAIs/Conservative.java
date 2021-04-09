@@ -384,6 +384,6 @@ public class Conservative extends BaseBot {
 
     @Override
     public String getPlayName() {
-        return "Sleepster";
+        return "Conservative";
     }
 }
