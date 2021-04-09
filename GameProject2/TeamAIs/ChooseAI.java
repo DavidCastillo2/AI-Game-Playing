@@ -12,7 +12,7 @@ public class ChooseAI {
         return switch (ai.toLowerCase()) {
             case "basic" -> new BasicBoi2000(topOrBot);
             case "aggresive" -> new Aggresive(topOrBot);
-            case "sleepy" -> new Sleepy(topOrBot);
+            case "con" -> new Conservative(topOrBot);
             default -> null;
         };
     }

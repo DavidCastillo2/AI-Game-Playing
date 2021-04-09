@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="AliceLib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/GameProject2/AliceLib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
