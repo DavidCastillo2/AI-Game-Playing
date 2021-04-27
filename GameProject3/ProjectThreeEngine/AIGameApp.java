@@ -7,6 +7,7 @@
 package ProjectThreeEngine;
 
 
+import Boot.BrainlessSnake;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -26,85 +27,85 @@ import javafx.scene.input.MouseEvent;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AIGameApp extends Application{
+public class AIGameApp extends Application {
     Player Player_0;
     Player Player_1;
-    
+
     Canvas test_canvas;
     Stage primary;
     GameState state;
-    
+
     // You can raise this delay to slow down the AI moves
     final double DELAY_TIME = 0.75;
 
-    public void start(Stage primaryStage){
-	//IMPORTANT : Change these lines to change who is playing!
-	Player_0 = new RandomPlayer();
-	Player_1 =  new RandomPlayer();
+    public void start(Stage primaryStage) {
+        //IMPORTANT : Change these lines to change who is playing!
+        Player_0 = new RandomPlayer();
+        Player_1 = new BrainlessSnake();
 
 
-	//Set up the names in the state object
-	String name_0;
-	String name_1;
-	name_0 = Player_0.getPlayName();
-	name_1 = Player_1.getPlayName();
+        //Set up the names in the state object
+        String name_0;
+        String name_1;
+        name_0 = Player_0.getPlayName();
+        name_1 = Player_1.getPlayName();
 
 
-	state = new GameState(name_0, name_1 );
-	Player_0.begin(new GameState(state), 0 );
-	Player_1.begin(new GameState(state), 1 );
-	
+        state = new GameState(name_0, name_1);
+        Player_0.begin(new GameState(state), 0);
+        Player_1.begin(new GameState(state), 1);
+
         primary = primaryStage;
-	String title = " " + name_0 + " " + name_1;
-       
+        String title = " " + name_0 + " " + name_1;
+
         primaryStage.setTitle(title);
         Group root = new Group();
         test_canvas = new Canvas(1200, 850);
- 
+
         root.getChildren().add(test_canvas);
         Scene mainScene;
         mainScene = new Scene(root, 1200, 850, Color.BEIGE);
-	
-		  
+
+
         primaryStage.setScene(mainScene);
         primaryStage.show();
 
-	Timeline quickTimer = new Timeline(new KeyFrame(Duration.seconds(DELAY_TIME), new EventHandler<ActionEvent>() {
-		
-		public void handle(ActionEvent event) {
-		    nextTurn();
-		}
-	    }));
+        Timeline quickTimer = new Timeline(new KeyFrame(Duration.seconds(DELAY_TIME), new EventHandler<ActionEvent>() {
 
-	
-	quickTimer.setCycleCount(Timeline.INDEFINITE);
-	quickTimer.play();		
+            public void handle(ActionEvent event) {
+                nextTurn();
+            }
+        }));
 
-	    
-	GameDisplayGraphics.displayState(test_canvas, state);
+
+        quickTimer.setCycleCount(Timeline.INDEFINITE);
+        quickTimer.play();
+
+
+        GameDisplayGraphics.displayState(test_canvas, state);
 
     }
 
 
-    void nextTurn(){
-	List<Move> moves = new ArrayList<Move>();
-	
-	if (! state.isGameOver() ){
-	    DirType new_dir;
+    void nextTurn() {
+        List<Move> moves = new ArrayList<Move>();
 
-	    new_dir = Player_0.getMove( new GameState(state) );
-	    if(new_dir != null){
-		moves.add(new Move(0, new_dir));
-	    }
+        if (!state.isGameOver()) {
+            DirType new_dir;
 
-	    new_dir = Player_1.getMove( new GameState(state) );
-	    if(new_dir != null){
-		moves.add(new Move(1, new_dir));
-	    }
-	    
-	    state = GameRules.makeMoves(state, moves);
-	    GameDisplayGraphics.displayState(test_canvas, state);
-	}
+            new_dir = Player_0.getMove(new GameState(state));
+            if (new_dir != null) {
+                moves.add(new Move(0, new_dir));
+            }
+
+            new_dir = Player_1.getMove(new GameState(state));
+            if (new_dir != null) {
+                moves.add(new Move(1, new_dir));
+            }
+
+            state = GameRules.makeMoves(state, moves);
+            GameDisplayGraphics.displayState(test_canvas, state);
+        }
     }
 }
 
