@@ -12,6 +12,9 @@ import java.util.List;
 public class GameBoard {
     List<List<Tile>> tiles = new ArrayList<>();
     List<Tile> changedTiles = new ArrayList<>();
+    List<Tile> us_snake = new ArrayList<>();
+    List<Tile> enemy_snake = new ArrayList<>();
+    public List<HeadPiece> heads = new ArrayList<>();
     int max_X = 15;
     int max_Y = 15;
     int us_num;
@@ -36,6 +39,11 @@ public class GameBoard {
     }
 
     public void update(GameState state) {
+        // temp? - reset this class's vars
+        this.us_snake = new ArrayList<>();
+        this.enemy_snake = new ArrayList<>();
+        this.heads = new ArrayList<>();
+
         // Reset our old tiles
         this.resetTiles();
 
@@ -52,13 +60,22 @@ public class GameBoard {
         }
     }
 
+    public Tile get(int x, int y) {
+        return this.tiles.get(x).get(y);
+    }
+
     private void findType(int x, int y, GamePiece gp, GameState state) {
+        // Get our tile that has a GamePiece in it
         Tile tile = this.tiles.get(x).get(y);
         this.changedTiles.add(tile);  // add to our list of changed tiles
+
+        // See what type of thing is inside of this tile
         if (isEnemySnake(x, y, state)) {
             tile.is_enemy = true;
+            this.enemy_snake.add(tile);  // temp?
         } else if (isUsSnake(x, y, state)) {
             tile.is_us = true;
+            this.us_snake.add(tile); // temp?
         } else {
 
             // Head Shenanigans???? The Headpiece is a different object so we cannot tell what it is.
@@ -67,8 +84,10 @@ public class GameBoard {
                 tile.has_food = true;
             } else if (player_num == this.us_num) {
                 tile.is_us = true;
+                this.heads.add(((HeadPiece)gp)); // temp
             } else {
                 tile.is_enemy = true;
+                this.heads.add(((HeadPiece)gp)); // temp
             }
         }
     }
@@ -98,23 +117,115 @@ public class GameBoard {
     }
 
     public void printBoard() {
+        System.out.print("   ");
+        for (int i=0; i < this.max_X; i++) {
+            System.out.print(i);
+            if (i < 9) System.out.print("   ");
+            else System.out.print("  ");
+        }
+        System.out.println();
         for (int y=0; y < this.max_Y; y++) {
             for (int x = 0; x < this.max_X; x++) {
-                System.out.print("|");
-                if (this.tiles.get(x).get(y).isEmpty()) {
+                System.out.print(" | ");
+                Tile t = this.tiles.get(x).get(y);
+                if (t.has_food) {
+                    System.out.print("f");
+                } else if (t.isEmpty()) {
                     System.out.print(" ");
-                } else {
-                    if (this.tiles.get(x).get(y).is_enemy) {
-                        System.out.print("x");
-                    } else if (this.tiles.get(x).get(y).is_us) {
-                        System.out.print("o");
-                    } else {
-                        System.out.print("f");
-                    }
+                } else if (t.is_enemy) {
+                    System.out.print("x");
+                } else if (t.is_us) {
+                    System.out.print("o");
+                } else if (t.force_filled) {
+                    System.out.print(" ");
                 }
             }
-            System.out.println("|");
+            System.out.print(" | ");
+            System.out.println(y);
         }
         System.out.println("\n\n");
+    }
+
+    // Returns nearby tiles that are not full of a snake/snakeHead
+    public List<Tile> nearByTiles(int x, int y) {
+        return nearByTiles(x, y, 1);
+    }
+
+    public List<Tile> nearByTiles(Tile t, int lengthAway) {
+        return nearByTiles(t.getX(), t.getY(), lengthAway);
+    }
+
+    public List<Tile> nearByTiles(int x, int y, int lengthAway) {
+        ArrayList<Tile> retVal = new ArrayList<>();
+        try {
+            Tile t = this.get(x + lengthAway, y); // Right
+            if (t.isEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(x - lengthAway, y); // Left
+            if (t.isEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(x, y - lengthAway); // Up
+            if (t.isEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(x, y + lengthAway); // Down
+            if (t.isEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        return retVal;
+    }
+
+    public List<Tile> allTiles() {
+        ArrayList<Tile> retVal = new ArrayList<>();
+        for (int x=0; x < this.max_X; x++) {
+            ArrayList<Tile> row = new ArrayList<>();
+            for (int y = 0; y < this.max_Y; y++) {
+                row.add(new Tile(x, y, this.us_num));
+            }
+            retVal.addAll(row);
+        }
+        return retVal;
+    }
+
+    public List<Tile> nearByTiles(Tile t) {
+        return nearByTiles(t.getX(), t.getY());
+    }
+
+    public List<Tile> panicOpenTiles(Tile tile) {
+        ArrayList<Tile> retVal = new ArrayList<>();
+        try {
+            Tile t = this.get(tile.getX() + 1, tile.getY()); // Right
+            if (t.hardEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(tile.getX() - 1, tile.getY()); // Left
+            if (t.hardEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(tile.getX(), tile.getY() - 1); // Up
+            if (t.hardEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        try {
+            Tile t = this.get(tile.getX(), tile.getY() + 1); // Down
+            if (t.hardEmpty()) retVal.add(t);
+        } catch (Exception e) {
+            // continue
+        }
+        return retVal;
     }
 }

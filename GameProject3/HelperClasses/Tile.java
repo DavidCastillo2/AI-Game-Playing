@@ -11,6 +11,7 @@ public class Tile {
     boolean has_food = false;
     boolean is_enemy = false;
     boolean is_us = false;
+    boolean force_filled = false;
 
     // All variables not made here should be updated in batch
     public Tile(int X, int Y, int usNum) {
@@ -24,13 +25,26 @@ public class Tile {
         }
     }
 
+    public int getX() { return this.x; }
+
+    public int getY() { return this.y; }
+
     public void reset() {
         has_food = false;
         is_enemy = false;
         is_us = false;
     }
 
-    public boolean isEmpty() {
-        return !has_food && !is_enemy && !is_us;
+    public boolean isEmpty() { return !force_filled && !is_enemy && !is_us; }
+
+    // Method for strictly checking if something exists
+    public boolean hardEmpty() { return !is_enemy && !is_us; }
+
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
     }
+
+    public void setIsEnemy(boolean b) { this.is_enemy = b; }
+
+    public void setForceFilled(boolean b) { this.force_filled = b; }
 }
