@@ -37,12 +37,15 @@ public class AIGameApp extends Application {
     GameState state;
 
     // You can raise this delay to slow down the AI moves
-    final double DELAY_TIME = 0.001;
+    final double DELAY_TIME = 0.5;
 
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         Player_0 = new BrainlessSnake(3, 0, 11, 14);
         Player_1 = new DontTreadOnMe(11, 14, 3, 0);
+
+        /*Player_0 = new RandomPlayer();
+        Player_1 = new RandomPlayer();*/
 
 
         //Set up the names in the state object

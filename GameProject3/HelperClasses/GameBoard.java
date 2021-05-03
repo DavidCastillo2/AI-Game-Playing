@@ -69,25 +69,30 @@ public class GameBoard {
         Tile tile = this.tiles.get(x).get(y);
         this.changedTiles.add(tile);  // add to our list of changed tiles
 
-        // See what type of thing is inside of this tile
-        if (isEnemySnake(x, y, state)) {
-            tile.is_enemy = true;
-            this.enemy_snake.add(tile);  // temp?
-        } else if (isUsSnake(x, y, state)) {
-            tile.is_us = true;
-            this.us_snake.add(tile); // temp?
-        } else {
 
-            // Head Shenanigans???? The Headpiece is a different object so we cannot tell what it is.
-            int player_num = isHead(gp);
-            if (player_num == -1) {
-                tile.has_food = true;
-            } else if (player_num == this.us_num) {
+        // Head Shenanigans???? The Headpiece is a different object so we cannot tell what it is.
+        int player_num = isHead(gp);
+        if (player_num != -1) {
+            // We have a head, find if it's ours or theirs
+            if (player_num == this.us_num) {
                 tile.is_us = true;
-                this.heads.add(((HeadPiece)gp)); // temp
             } else {
                 tile.is_enemy = true;
-                this.heads.add(((HeadPiece)gp)); // temp
+            }
+            this.heads.add(((HeadPiece) gp));
+
+        // We have a non SnakeHead piece
+        } else {
+            // See if its a snake piece, and whose snake it is
+            if (isEnemySnake(x, y, state)) {
+                tile.is_enemy = true;
+                this.enemy_snake.add(tile);
+            } else if (isUsSnake(x, y, state)) {
+                tile.is_us = true;
+                this.us_snake.add(tile);
+            // It's food since that is all that is left
+            } else {
+                tile.has_food = true;
             }
         }
     }
