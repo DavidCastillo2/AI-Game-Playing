@@ -75,22 +75,31 @@ public class BrainlessSnake implements Player {
 
     // Using a tile it chooses the Dir to reach that tile, updates this.Head vars
     public DirType getDir(Tile target) {
+        // If the target is the same as our current location, that means no targets were reachable
+        //      We get all open tiles next to our head
         if (target.getX() == this.us_head_x && target.getY() == this.us_head_y) {
             if (print) System.out.println(" PANIC!!");
             List<Tile> options = this.gb.panicOpenTiles(target);
 
+            // There are no open tiles next to our head
             if (options.size() == 0) {  // Accept Death
                 if (print) System.out.println(" WE DIE!");
                 return DirType.South;
+
+            // There are open tiles, so we find the one that results in the longest path
             } else {
                 int longestPath = -1;
                 Tile newTarget = target;
 
-                // TODO Need to force Dijkstra to ignore .ForceOpen() tiles.
+                // For every tile next to our head, find the longest path to a tile near us.
+                // TODO maybe find a better target to aim for during this panic state?
                 for (Tile t : options) {
+                    this.dk.setPanicMode();
                     LinkedList<Tile> path = this.dk.path(target, t, gb);
+                    this.dk.undoPanicMode();
+
                     if (path == null) continue;
-                    int pathLength = this.dk.path(target, t, gb).size();
+                    int pathLength = path.size();
                     if (this.print) System.out.println(pathLength);
                     if (pathLength > longestPath) {
                         newTarget = t;

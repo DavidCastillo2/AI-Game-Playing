@@ -6,6 +6,7 @@ public class Dijkstra {
     GameBoard gb;
     Graph graph;
     Tile start;
+    public boolean ignoreForceFilled = false;
 
 
     public Dijkstra() {}
@@ -32,6 +33,7 @@ public class Dijkstra {
         while (not_visited.size() != 0) {
             Node current = not_visited.remove(0);
             List<Node> children = this.graph.nearByTiles(current);
+            if (this.ignoreForceFilled) children = this.graph.panicOpenTiles(current);
             int distanceToChild = current.distance + 1;
 
             for (Node n : children) {
@@ -46,6 +48,16 @@ public class Dijkstra {
 
             visited.add(current);
         }
+    }
+
+    public void setPanicMode() {
+        this.gb = null;  // To make us re-do Dijkstra
+        this.ignoreForceFilled = true;
+    }
+
+    public void undoPanicMode() {
+        this.gb = null;
+        this.ignoreForceFilled = false;
     }
 
     private class Node {
@@ -86,6 +98,16 @@ public class Dijkstra {
         public Graph(GameBoard gb) {
             this.gb = gb;
             fillGraph(gb);
+        }
+
+        public List<Node> panicOpenTiles(Node n) {
+            List<Tile> tiles = this.gb.panicOpenTiles(n.tile);
+            ArrayList<Node> retVal = new ArrayList<>();
+
+            for (Tile t : tiles) {
+                retVal.add(this.get(t.getX(), t.getY()));
+            }
+            return retVal;
         }
 
         public LinkedList<Tile> pathToTile(Tile goal) {

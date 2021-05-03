@@ -29,6 +29,6 @@ public class DontTreadOnMe implements Player {
 
     @Override
     public String getPlayName() {
-        return null;
+        return "Dont Tread On Me";
     }
 }
