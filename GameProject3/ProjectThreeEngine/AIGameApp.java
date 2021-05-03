@@ -8,6 +8,7 @@ package ProjectThreeEngine;
 
 
 import Boot.BrainlessSnake;
+import Boot.DontTreadOnMe;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -41,7 +42,7 @@ public class AIGameApp extends Application {
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         Player_0 = new BrainlessSnake(3, 0, 11, 14);
-        Player_1 = new BrainlessSnake(11, 14, 3, 0);
+        Player_1 = new DontTreadOnMe(11, 14, 3, 0);
 
 
         //Set up the names in the state object
