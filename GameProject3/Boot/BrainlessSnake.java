@@ -21,14 +21,14 @@ public class BrainlessSnake implements Player {
     int enemy_num;
     GameBoard gb;
     Dijkstra dk = new Dijkstra();
-    int us_head_x;     // Currently Hardcoded For Initial Value
-    int us_head_y;     // Currently Hardcoded For Initial Value
-    int enemy_head_x;  // Currently Hardcoded For Initial Value
-    int enemy_head_y;  // Currently Hardcoded For Initial Value
+    int us_head_x;     // Currently Hardcoded For Initial Value ; -;
+    int us_head_y;     // Currently Hardcoded For Initial Value ; -;
+    int enemy_head_x;  // Currently Hardcoded For Initial Value ; -;
+    int enemy_head_y;  // Currently Hardcoded For Initial Value ; -;
     boolean print = false;
 
     public BrainlessSnake(int usX, int usY, int badX, int badY) {
-        // Sad hard coded section
+        // Sad hard coded section ; -;
         us_head_x = usX;
         us_head_y = usY;
         enemy_head_x = badX;
@@ -98,6 +98,8 @@ public class BrainlessSnake implements Player {
                     LinkedList<Tile> path = this.dk.path(target, t, gb);
                     this.dk.undoPanicMode();
 
+                    // If a path exists, see if its longer than what we had before
+                    // TODO the idea of going for longest might mean it's easier to circle around us and kill us
                     if (path == null) continue;
                     int pathLength = path.size();
                     if (this.print) System.out.println(pathLength);
@@ -111,6 +113,7 @@ public class BrainlessSnake implements Player {
             }
         }
 
+        // just use our head and target location to figure out which direction to move
         int dist_x = this.us_head_x - target.getX();
         int dist_y = this.us_head_y - target.getY();
         assert(dist_x != 0 && dist_y != 0);
@@ -219,7 +222,7 @@ public class BrainlessSnake implements Player {
 
     @Override
     public String getPlayName() {
-        if (this.us_head_x == 11)
+        if (this.us_head_x == 3)
         return """
                 ∵*.•´¸.•*´✶´♡
                 ° ☆ °˛*˛☆_Π______*˚☆*
