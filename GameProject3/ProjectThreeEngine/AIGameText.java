@@ -6,6 +6,9 @@
 
 package ProjectThreeEngine;
 
+import Boot.BrainlessSnake;
+import Boot.EducatedSnake;
+
 import java.util.List;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -32,8 +35,9 @@ public class AIGameText{
 	gs_writer = new GameStateWriter(filename);
 	
 	//IMPORTANT : Change these lines to change who is playing!
-	Player_0 = new RandomPlayer();
-	Player_1 =  new RandomPlayer();
+	Player_0 = new EducatedSnake();
+	//Player_0 = new BrainlessSnake(3, 0, 11, 14);
+	Player_1 =  new EducatedSnake();
 
 
 	//Set up the names in the state object

@@ -64,6 +64,19 @@ public class GameBoard {
         return this.tiles.get(x).get(y);
     }
 
+    public HeadPiece getMyHead(GameState state, int play_num){
+        for(int x = 0; x < 15; x++){
+            for(int y = 0; y < 15; y++){
+                GamePiece piece = state.getPiece(x, y);
+                if(piece instanceof HeadPiece){
+                    HeadPiece headPiece = ((HeadPiece)piece);
+                    if(state.getSnake(play_num).isPresent(x, y)) return headPiece;
+                }
+            }
+        }
+        return null;
+    }
+
     private void findType(int x, int y, GamePiece gp, GameState state) {
         // Get our tile that has a GamePiece in it
         Tile tile = this.tiles.get(x).get(y);
