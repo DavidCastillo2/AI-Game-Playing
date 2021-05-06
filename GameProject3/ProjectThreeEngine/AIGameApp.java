@@ -8,6 +8,7 @@ package ProjectThreeEngine;
 
 
 import Boot.BrainlessSnake;
+import Boot.DiveBomb;
 import Boot.DontTreadOnMe;
 import Boot.EducatedSnake;
 import javafx.application.Application;
@@ -38,14 +39,14 @@ public class AIGameApp extends Application {
     GameState state;
 
     // You can raise this delay to slow down the AI moves
-    final double DELAY_TIME = 0.1;
+    final double DELAY_TIME = 0.01;
 
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         Player_0 = new BrainlessSnake(3, 0, 11, 14);
-        //Player_0 = new EducatedSnake();
-        //Player_1 = new BrainlessSnake(11, 14, 3, 0);
-        Player_1 = new EducatedSnake();
+        // Player_0 = new EducatedSnake();
+        Player_1 = new DontTreadOnMe(11, 14, 3, 0);
+        // Player_1 = new EducatedSnake();
 
         /*Player_0 = new RandomPlayer();
         Player_1 = new RandomPlayer();*/
