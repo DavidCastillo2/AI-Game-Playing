@@ -14,11 +14,11 @@ public class DiveBomb implements Player {
     // Just a testing class that can simulate the crashing into stuff behaviors.
     public DiveBomb(int playerNum) {
         this.num = "Player " + String.valueOf(playerNum+1);
-        headOn(playerNum);
-        Player2Wins(playerNum);
-        Player1Wins(playerNum);
-        // if (playerNum == 0)
-            PlayerInsideSelf(playerNum);
+        // headOn(playerNum);
+        // Player2Wins(playerNum);
+        // Player1Wins(playerNum);
+        // if (playerNum == 1)
+            // PlayerInsideSelf(playerNum);
     }
 
     public void PlayerInsideSelf(int playerNum) {

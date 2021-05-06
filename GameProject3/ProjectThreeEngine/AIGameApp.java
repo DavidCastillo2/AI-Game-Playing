@@ -44,8 +44,10 @@ public class AIGameApp extends Application {
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
         Player_0 = new BrainlessSnake(3, 0, 11, 14);
+        Player_0 = new DiveBomb(0);
         // Player_0 = new EducatedSnake();
         Player_1 = new DontTreadOnMe(11, 14, 3, 0);
+        Player_1 = new DiveBomb(1);
         // Player_1 = new EducatedSnake();
 
         /*Player_0 = new RandomPlayer();
