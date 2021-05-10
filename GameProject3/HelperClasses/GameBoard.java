@@ -7,6 +7,7 @@ import ProjectThreeEngine.Snake;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GameBoard {
@@ -14,6 +15,9 @@ public class GameBoard {
     List<Tile> changedTiles = new ArrayList<>();
     List<Tile> us_snake = new ArrayList<>();
     List<Tile> enemy_snake = new ArrayList<>();
+    List<Tile> foods = new ArrayList<>();
+    HeadPiece us_head;
+    HeadPiece enemy_head;
     public List<HeadPiece> heads = new ArrayList<>();
     int max_X = 15;
     int max_Y = 15;
@@ -38,11 +42,24 @@ public class GameBoard {
         }
     }
 
+    public List<Tile> getEnemySnake() {
+        return enemy_snake;
+    }
+
+    public List<Tile> getUsSnake() {
+        return us_snake;
+    }
+
+    public List<Tile> getFoods() {
+        return foods;
+    }
+
     public void update(GameState state) {
         // temp? - reset this class's vars
         this.us_snake = new ArrayList<>();
         this.enemy_snake = new ArrayList<>();
         this.heads = new ArrayList<>();
+        this.foods = new ArrayList<>();
 
         // Reset our old tiles
         this.resetTiles();
@@ -106,12 +123,15 @@ public class GameBoard {
             // It's food since that is all that is left
             } else {
                 tile.has_food = true;
+                this.foods.add(tile);
             }
         }
     }
 
     private int isHead(GamePiece gp) {
         try {
+            if (((HeadPiece)gp).getNum() == this.us_num) this.us_head = ((HeadPiece)gp);
+                else this.enemy_head = ((HeadPiece)gp);
             return ((HeadPiece)gp).getNum();
         } catch (Exception e) {
             return -1;  // This means its a food piece
@@ -151,9 +171,15 @@ public class GameBoard {
                 } else if (t.isEmpty()) {
                     System.out.print(" ");
                 } else if (t.is_enemy) {
-                    System.out.print("x");
+                    if (t.getX() == this.enemy_head.getX() && t.getY() == this.enemy_head.getY())
+                        System.out.print("T");
+                    else
+                        System.out.print("x");
                 } else if (t.is_us) {
-                    System.out.print("o");
+                    if (t.getX() == this.us_head.getX() && t.getY() == this.us_head.getY())
+                        System.out.print("U");
+                    else
+                        System.out.print("o");
                 } else if (t.force_filled) {
                     System.out.print(" ");
                 }

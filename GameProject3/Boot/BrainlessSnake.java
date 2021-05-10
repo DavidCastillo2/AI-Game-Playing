@@ -1,6 +1,7 @@
 package Boot;
 
 import HelperClasses.*;
+import HelperClasses.Reinforcement.USuckUnless;
 import ProjectThreeEngine.*;
 
 import java.util.ArrayList;
@@ -70,6 +71,12 @@ public class BrainlessSnake implements Player {
         if (print) System.out.println(" Dir: " + retVal);
 
         if (print) this.gb.printBoard();
+
+        if (this.us_num == 0) {
+            float val = USuckUnless.grade(state, this.us_num, DirType.South);
+            System.out.println(val);
+            this.gb.printBoard();
+        }
         return retVal;
     }
 
