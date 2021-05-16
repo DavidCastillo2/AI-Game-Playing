@@ -24,6 +24,9 @@ public class USuckUnless {
         GameBoard gb = new GameBoard(state, player_num, enemy_num);
         gb.update(state);
 
+        // This set the enemy's head to empty so that we can path to it
+        setEnemyEmpty(gb, state, player_num, enemy_num);
+
         return finalCalc(gb, state, player_num, enemy_num);
     }
 
@@ -55,6 +58,12 @@ public class USuckUnless {
         return p1 + p2 + p3 + p4*1000;
     }
 
+    public static void setEnemyEmpty(GameBoard gb, GameState state, int pNum, int eNum) {
+        // Set the enemy's head location as empty manually so we can path directly to it
+        HeadPiece enemy = gb.getMyHead(state, eNum);
+        gb.get(enemy.getX(), enemy.getY()).reset();
+    }
+
     // Our head is close to Enemy head value
     public static int distToEnemyHead(GameBoard gb, GameState state, int pNum, int eNum) {
         HeadPiece us = gb.getMyHead(state, pNum);
@@ -74,9 +83,7 @@ public class USuckUnless {
         HeadPiece us = gb.getMyHead(state, pNum);
         HeadPiece enemy = gb.getMyHead(state, eNum);
 
-        // Set the enemy's head location as empty manually so we can path directly to it
         Dijkstra dk = new Dijkstra();
-        gb.get(enemy.getX(), enemy.getY()).reset();
         Tile start = gb.get(us.getX(), us.getY());
 
         int totalDist = 0;
