@@ -64,6 +64,9 @@ public class GameBoard {
         // Reset our old tiles
         this.resetTiles();
 
+        // Get our heads
+        this.updateHeads(state);
+
         // Iterate over the board looking for any game piece
         for (int x=0; x < this.max_X; x++) {
             for (int y=0; y < this.max_Y; y++) {
@@ -77,8 +80,26 @@ public class GameBoard {
         }
     }
 
+    public void updateHeads(GameState state) {
+        this.us_head    = this.getMyHead(state, this.us_num);
+        this.enemy_head = this.getMyHead(state, this.enemy_num);
+
+        this.heads.add(this.us_head);
+        this.heads.add(this.enemy_head);
+
+        this.tiles.get(this.us_head.getX()).get(this.us_head.getY()).is_us = true;
+        this.tiles.get(this.enemy_head.getX()).get(this.enemy_head.getY()).is_enemy = true;
+
+        this.changedTiles.add(this.tiles.get(this.us_head.getX()).get(this.us_head.getY()));
+        this.changedTiles.add(this.tiles.get(this.enemy_head.getX()).get(this.enemy_head.getY()));
+    }
+
     public Tile get(int x, int y) {
         return this.tiles.get(x).get(y);
+    }
+
+    public void setTile(Tile t) {
+        this.tiles.get(t.getX()).set(t.getY(), t);
     }
 
     public HeadPiece getMyHead(GameState state, int play_num){
@@ -99,20 +120,9 @@ public class GameBoard {
         Tile tile = this.tiles.get(x).get(y);
         this.changedTiles.add(tile);  // add to our list of changed tiles
 
-
-        // Head Shenanigans???? The Headpiece is a different object so we cannot tell what it is.
+        // We have a non head piece item
         int player_num = isHead(gp);
-        if (player_num != -1) {
-            // We have a head, find if it's ours or theirs
-            if (player_num == this.us_num) {
-                tile.is_us = true;
-            } else {
-                tile.is_enemy = true;
-            }
-            this.heads.add(((HeadPiece) gp));
-
-        // We have a non SnakeHead piece
-        } else {
+        if (player_num == -1) {
             // See if its a snake piece, and whose snake it is
             if (isEnemySnake(x, y, state)) {
                 tile.is_enemy = true;
@@ -130,8 +140,6 @@ public class GameBoard {
 
     private int isHead(GamePiece gp) {
         try {
-            if (((HeadPiece)gp).getNum() == this.us_num) this.us_head = ((HeadPiece)gp);
-                else this.enemy_head = ((HeadPiece)gp);
             return ((HeadPiece)gp).getNum();
         } catch (Exception e) {
             return -1;  // This means its a food piece
@@ -187,7 +195,6 @@ public class GameBoard {
             System.out.print(" | ");
             System.out.println(y);
         }
-        System.out.println("\n\n");
     }
 
     // Returns nearby tiles that are not full of a snake/snakeHead

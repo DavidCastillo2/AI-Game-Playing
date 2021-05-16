@@ -57,22 +57,23 @@ public class BrainlessSnake implements Player {
             t.setForceFilled(true);
     }
 
-    // This snake just moves up.
+    // Function called every turn
     @Override
     public DirType getMove(GameState state) {
-        if (print) System.out.println();
+        if (print) System.out.println("\n\n");
         this.gb.update(state);  // Must be done every turn
         this.findEnemySnake();  // Update Enemy Snake's head Location
         this.markDangerTiles(); // Mark tiles the Enemy Snake can reach and filled
+        if (print) this.gb.printBoard();
         if (print) System.out.println("DIVEBOMB ENTER -> Us_X: " + this.us_head_x + ", Us_Y: " + this.us_head_y + "  -> " + this.us_num);
         Tile target = this.diveBomb();
         if (print) System.out.print("DIVEBOMB EXIT -> Target_X: " + target.getX() + " Target_Y: " + target.getY());
         DirType retVal = getDir(target);
         if (print) System.out.println(" Dir: " + retVal);
 
-        if (print) this.gb.printBoard();
 
         if (this.us_num == 0) {
+            System.out.println("\n\n\n");
             float val = USuckUnless.grade(state, this.us_num, DirType.South);
             System.out.println(val);
             this.gb.printBoard();
@@ -229,6 +230,9 @@ public class BrainlessSnake implements Player {
 
     @Override
     public String getPlayName() {
+        if (print)
+            return "End me";
+
         if (this.us_head_x == 3)
         return """
                 ∵*.•´¸.•*´✶´♡

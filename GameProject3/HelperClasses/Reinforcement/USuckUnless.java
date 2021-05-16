@@ -47,12 +47,12 @@ public class USuckUnless {
         p4 = nearFood / 22;
 
         System.out.println(p1);
-        System.out.println("p2 DEAD");
+        System.out.println(p2);
         System.out.println(p3);
         System.out.println(p4*1000);
 
 
-        return p1 + p3 + p4*1000;
+        return p1 + p2 + p3 + p4*1000;
     }
 
     // Our head is close to Enemy head value
@@ -73,7 +73,10 @@ public class USuckUnless {
     public static float nearEnemyBody(GameBoard gb, GameState state, int pNum, int eNum) {
         HeadPiece us = gb.getMyHead(state, pNum);
         HeadPiece enemy = gb.getMyHead(state, eNum);
+
+        // Set the enemy's head location as empty manually so we can path directly to it
         Dijkstra dk = new Dijkstra();
+        gb.get(enemy.getX(), enemy.getY()).reset();
         Tile start = gb.get(us.getX(), us.getY());
 
         int totalDist = 0;
@@ -85,11 +88,11 @@ public class USuckUnless {
                 reachabel++;
             }
         }
-        if (reachabel != 0) {
+        if (reachabel == 0) {
             HeadPiece enemyHead = gb.getMyHead(state, eNum);
-            int distToEnemyHead = dk.path(start, gb.get(enemy.getX(), enemyHead.getY()), gb).size();
-            if (distToEnemyHead == 0) return Float.MIN_VALUE;  // This means death
-            return distToEnemyHead * 1.0f;
+            List<Tile> distToEnemyHead = dk.path(start, gb.get(enemy.getX(), enemyHead.getY()), gb);
+            if (distToEnemyHead == null) return Float.MIN_VALUE;  // This means death
+            return distToEnemyHead.size() * 1.0f;
         }
 
         return (totalDist * 1.0f) / reachabel;

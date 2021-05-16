@@ -33,6 +33,7 @@ public class Tile implements Comparable<Tile>{
         has_food = false;
         is_enemy = false;
         is_us = false;
+        force_filled = false;
     }
 
     public boolean isEmpty() { return !force_filled && !is_enemy && !is_us; }
