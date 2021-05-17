@@ -45,7 +45,7 @@ public class AIGameText{
 	String name_1;
 	name_0 = Player_0.getPlayName();
 	name_1 = Player_1.getPlayName();
-
+a
 
 	state = new GameState(name_0, name_1 );
 	Player_0.begin(new GameState(state), 0 );
