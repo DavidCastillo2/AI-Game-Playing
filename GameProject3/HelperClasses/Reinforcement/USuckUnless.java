@@ -39,23 +39,26 @@ public class USuckUnless {
 
 
         if (distToEnemyHead == 0) p1 = 1;
-        else p1 = (40.0f / distToEnemyHead) / 40;
+        else p1 = (40.0f / distToEnemyHead) / 53.337f;
 
-        if (nearEnemyBody == Float.MIN_VALUE) p2 = -100;
-        else p2 = (22    / nearEnemyBody)   / 22;
+        if (nearEnemyBody == Float.MIN_VALUE) p2 = -1.5f;
+        else p2 = (22    / nearEnemyBody)   / 29.35f;
 
         if (lengthVsEnemyLength > 2) p3 = 0.0f;
-        else p3 = lengthVsEnemyLength / 2;
+        else p3 = lengthVsEnemyLength / 2 /4;
 
-        p4 = nearFood / 22;
+        p4 = nearFood/22/4 *100;
 
-        System.out.println(p1);
-        System.out.println(p2);
-        System.out.println(p3);
-        System.out.println(p4*1000);
+        if(p1 + p2 + p3 + p4>1) {
+            System.out.println("p1" + p1);
+            System.out.println("p2" + p2);
+            System.out.println("p3" + p3);
 
+            System.out.println("p4" + p4);
+            System.out.println("Whoops");
+        }
 
-        return p1 + p2 + p3 + p4*1000;
+        return p1 + p2 + p3 + p4;
     }
 
     public static void setEnemyEmpty(GameBoard gb, GameState state, int pNum, int eNum) {
