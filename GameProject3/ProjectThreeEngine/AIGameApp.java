@@ -39,7 +39,7 @@ public class AIGameApp extends Application {
     GameState state;
 
     // You can raise this delay to slow down the AI moves
-    final double DELAY_TIME = 0.01;
+    final double DELAY_TIME = 0.1;
 
     public void start(Stage primaryStage) {
         //IMPORTANT : Change these lines to change who is playing!
