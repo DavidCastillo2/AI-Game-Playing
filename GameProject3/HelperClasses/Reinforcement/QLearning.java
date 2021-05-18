@@ -134,7 +134,7 @@ public class QLearning extends ReinforcmentLearner {
     }
 
     public QLearning(Snake agent, GameBoard envo, GameState state, int play_num){
-        super(agent, envo, state);
+        super();
         //Initialize Q-Table
         this.qTable = new QTable();
         try {

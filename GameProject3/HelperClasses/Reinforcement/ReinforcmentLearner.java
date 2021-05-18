@@ -10,18 +10,18 @@ public abstract class ReinforcmentLearner {
     GameState state;
     //Heuristic reward;
 
-    public ReinforcmentLearner(Snake agent, GameBoard envo, GameState state){
-        this.agent = agent;
-        this.enviroment = envo;
-        this.state = state;
+    public ReinforcmentLearner(){
+        //this.agent = agent;
+        //this.enviroment = envo;
+        //this.state = state;
     }
 
     public static int MoveDirectionToNumber(DirType direction){
-        if(direction == DirType.North) return 1;
-        if(direction == DirType.South) return 3;
-        if(direction == DirType.East) return 2;
-        if(direction == DirType.West) return 4;
-        else return 0;
+        if(direction == DirType.North) return 0;
+        if(direction == DirType.South) return 2;
+        if(direction == DirType.East) return 1;
+        if(direction == DirType.West) return 3;
+        else return -1;
     }
 
     public static int MoveDirectionToNumber(Move action){
@@ -30,16 +30,16 @@ public abstract class ReinforcmentLearner {
 
     public static int getCellType(GamePiece piece, int player_num){
         if(piece instanceof SnakePiece){
-            if(((SnakePiece) piece).getNum() == player_num) return 1;
-            return 2;
+            if(((SnakePiece) piece).getNum() == player_num) return 0;
+            return 1;
         }
         if(piece instanceof HeadPiece){
-            if(((HeadPiece) piece).getNum() == player_num) return 1;
-            return 3;
+            if(((HeadPiece) piece).getNum() == player_num) return 0;
+            return 2;
         }
         if(piece instanceof FoodPiece){
-            return 4;
+            return 3;
         }
-        return 5;
+        return 4;
     }
 }

@@ -30,6 +30,12 @@ public class GameBoard {
         this.fillBoard();
     }
 
+    public GameBoard copyUpdate(GameState state){
+        GameBoard copy = this;
+        update(state);
+        return copy;
+    }
+
     // Just part of the init things to fill our double array
     // this.tiles.get(x).get(y) is the proper format
     private void fillBoard() {
@@ -102,7 +108,7 @@ public class GameBoard {
         this.tiles.get(t.getX()).set(t.getY(), t);
     }
 
-    public HeadPiece getMyHead(GameState state, int play_num){
+    public static HeadPiece getMyHead(GameState state, int play_num){
         for(int x = 0; x < 15; x++){
             for(int y = 0; y < 15; y++){
                 GamePiece piece = state.getPiece(x, y);
