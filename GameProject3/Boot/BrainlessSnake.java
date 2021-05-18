@@ -74,6 +74,8 @@ public class BrainlessSnake implements Player {
 
         if (this.us_num == 0) {
             System.out.println("\n\n\n");
+            GameBoard gb= new GameBoard(state, 1,0);
+            gb.update(state);
             float val = USuckUnless.grade(state, this.us_num, DirType.South);
             System.out.println(val);
             this.gb.printBoard();

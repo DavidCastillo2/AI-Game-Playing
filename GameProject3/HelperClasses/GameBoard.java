@@ -127,7 +127,8 @@ public class GameBoard {
             if (isEnemySnake(x, y, state)) {
                 tile.is_enemy = true;
                 this.enemy_snake.add(tile);
-            } else if (isUsSnake(x, y, state)) {
+            }
+            else if (isUsSnake(x, y, state)) {
                 tile.is_us = true;
                 this.us_snake.add(tile);
             // It's food since that is all that is left
@@ -163,6 +164,7 @@ public class GameBoard {
     }
 
     public void printBoard() {
+
         System.out.print("   ");
         for (int i=0; i < this.max_X; i++) {
             System.out.print(i);

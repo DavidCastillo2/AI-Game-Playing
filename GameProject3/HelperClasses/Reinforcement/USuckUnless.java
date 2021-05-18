@@ -49,6 +49,8 @@ public class USuckUnless {
 
         p4 = nearFood/22/4 *100;
 
+
+
         if(p1 + p2 + p3 + p4>1) {
             System.out.println("p1" + p1);
             System.out.println("p2" + p2);
@@ -89,6 +91,7 @@ public class USuckUnless {
         Dijkstra dk = new Dijkstra();
         Tile start = gb.get(us.getX(), us.getY());
 
+
         int totalDist = 0;
         int reachabel = 0;
         for (Tile t : gb.getEnemySnake()) {
@@ -100,18 +103,19 @@ public class USuckUnless {
         }
         if (reachabel == 0) {
             HeadPiece enemyHead = gb.getMyHead(state, eNum);
+
             List<Tile> distToEnemyHead = dk.path(start, gb.get(enemy.getX(), enemyHead.getY()), gb);
             if (distToEnemyHead == null) return Float.MIN_VALUE;  // This means death
             return distToEnemyHead.size() * 1.0f;
         }
-
         return (totalDist * 1.0f) / reachabel;
     }
 
     // Get size of Us compared to Enemy Length
     public static float lengthOfEnemyBody(GameBoard gb, GameState state, int pNum, int eNum) {
-        int us_body_length = gb.getUsSnake().size();
-        int enemy_body_length = gb.getEnemySnake().size();
+        gb.updateHeads(state);
+        int us_body_length = gb.getUsSnake().size()+1;
+        int enemy_body_length = gb.getEnemySnake().size()+1;
         return ( (us_body_length*1.0f) / enemy_body_length);
     }
 
